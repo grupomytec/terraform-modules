@@ -41,7 +41,7 @@ jobs:
             echo AWS_SECRET_KEY=${{ secrets.AWSACCOUNT_PROD_AWS_SECRET_KEY }} >> $GITHUB_ENV
           fi
           if [ ${{ github.ref_name }} == "stage" ]; then
-            branchdir=prod
+            branchdir=stage
             # AWS SECRET VARIABLES
             echo TF_VAR_AWS_ACCESS_KEY=${{ secrets.AWSACCOUNT_STAGE_AWS_ACCESS_KEY }} >> $GITHUB_ENV
             echo TF_VAR_AWS_SECRET_KEY=${{ secrets.AWSACCOUNT_STAGE_AWS_SECRET_KEY }} >> $GITHUB_ENV
