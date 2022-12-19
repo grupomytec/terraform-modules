@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "VisualEditor0",
+          "Effect": "Allow",
+          "Action": [
+              "secretsmanager:GetResourcePolicy",
+              "secretsmanager:GetSecretValue",
+              "secretsmanager:DescribeSecret",
+              "secretsmanager:ListSecretVersionIds",
+              "secretsmanager:TagResource"
+          ],
+          "Resource": "arn:aws:secretsmanager:us-east-1:0000000000:secret:service-*"
+      },
+      {
+          "Sid": "VisualEditor1",
+          "Effect": "Allow",
+          "Action": "sqs:*",
+          "Resource": "arn:aws:sqs:us-east-1:000000000000:service-*"
+      }
+  ]
+}
