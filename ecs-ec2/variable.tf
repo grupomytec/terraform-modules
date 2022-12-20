@@ -1,7 +1,7 @@
 variable "tags" {
-  type        = map(any)
+  type        = list(any)
   description = "Tags"
-  default     = {}
+  default     = null
 }
 
 variable "task_environment" {
