@@ -1,0 +1,4 @@
+COMMON_ENV_BUCKET=bucketenv
+COMMON_ENV_PATH=common/env.prod
+
+
