@@ -17,14 +17,12 @@ variable "task_secrets" {
 }
 
 variable "task_role" {
-  type        = list(any)
+  type        = string
   description = "Task role"
-  default     = null
 }
 variable "task_exec_role" {
-  type        = list(any)
+  type        = string
   description = "Task exec role"
-  default     = null
 }
 
 
