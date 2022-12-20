@@ -52,6 +52,7 @@ jobs:
         
         if [ ${{ github.ref_name }} == "prod" ]; then
           branchdir=prod
+          echo branchdir=$branchdir >> $GITHUB_ENV
           # AWS SECRET VARIABLES
           echo TF_VAR_AWS_ACCESS_KEY=${{ secrets.AWSACCOUNT_PROD_AWS_ACCESS_KEY }} >> $GITHUB_ENV
           echo TF_VAR_AWS_SECRET_KEY=${{ secrets.AWSACCOUNT_PROD_AWS_SECRET_KEY }} >> $GITHUB_ENV
@@ -60,6 +61,7 @@ jobs:
         fi
         if [ ${{ github.ref_name }} == "stage" ]; then
           branchdir=stage
+          echo branchdir=$branchdir >> $GITHUB_ENV
           # AWS SECRET VARIABLES
           echo TF_VAR_AWS_ACCESS_KEY=${{ secrets.AWSACCOUNT_STAGE_AWS_ACCESS_KEY }} >> $GITHUB_ENV
           echo TF_VAR_AWS_SECRET_KEY=${{ secrets.AWSACCOUNT_STAGE_AWS_SECRET_KEY }} >> $GITHUB_ENV
@@ -67,61 +69,81 @@ jobs:
           echo AWS_SECRET_KEY=${{ secrets.AWSACCOUNT_STAGE_AWS_SECRET_KEY }} >> $GITHUB_ENV
         fi
 
-        #TERRAFORM ENVIRONMENTS VARIABLES
+        # TERRAFORM ENVIRONMENTS VARIABLES
         for i in `cat ./$branchdir/*.var`; do
           if [[ $i != \#* ]]; then
             echo "$i" >> $GITHUB_ENV
           fi
         done
         
-        #TASK ENVIRONMENT VARIABLES
-        echo 'TF_VAR_ENVIRONMENTVAR<<EOF' >> $GITHUB_ENV
-        echo '[' >> $GITHUB_ENV
-        for i in `cat ./$branchdir/*.env`; do 
-          echo $i | awk -F= '{print "{"; print "\t\"name\" = " $1"," ; print "\t\"value\" = " $2 ; print "}," }' >> $GITHUB_ENV
-        done
-        #echo '{}' >> $GITHUB_ENV
-        echo ']' >> $GITHUB_ENV
-        echo 'EOF' >> $GITHUB_ENV
-        
         # TASK ENVIRONMENT SECRETS
         echo 'TF_VAR_SECRETSVAR<<EOF' >> $GITHUB_ENV
         echo '[' >> $GITHUB_ENV
-        for i in `cat ./$branchdir/*.secrets`; do 
-           echo $i | awk -F= '{print "{"; print "\t\"name\" = " $1"," ; print "\t\"valueFrom\" = " $2 ; print "}," }' >> $GITHUB_ENV
+        for i in `cat ./$branchdir/*.secrets`; do
+          if [[ $i != \#* ]]; then
+           echo $i | awk -F= '{print "{"; print "\t\"name\" = " "\""$1"\"""," ; print "\t\"valueFrom\" = " "\""$2"\"" ; print "}," }' >> $GITHUB_ENV
+          fi
         done
         #echo '{}' >> $GITHUB_ENV
         echo ']' >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
         
-        #TAGS VARIABLES
+        # TAGS VARIABLES
         echo 'TF_VAR_TAGS<<EOF' >> $GITHUB_ENV
         echo '{' >> $GITHUB_ENV
-        for i in `cat ./$branchdir/*.tags`; do 
-          echo "$i" >> $GITHUB_ENV
+        for i in `cat ./$branchdir/*.tags`; do
+          if [[ $i != \#* ]]; then
+            echo "$i" >> $GITHUB_ENV
+          fi
         done
         echo '}' >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
         
-        #TASK ROLE
+        # TASK ROLE
         echo 'TF_VAR_TASKROLE<<EOF' >> $GITHUB_ENV
         for i in `cat ./$branchdir/*.taskrole`; do 
           echo "$i" >> $GITHUB_ENV
         done
         echo 'EOF' >> $GITHUB_ENV
 
-        #TASK EXEC ROLE
+        # TASK EXEC ROLE
         echo 'TF_VAR_TASKEXECROLE<<EOF' >> $GITHUB_ENV
         for i in `cat ./$branchdir/*.taskexecrole`; do 
           echo "$i" >> $GITHUB_ENV
         done
         echo 'EOF' >> $GITHUB_ENV
 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ env.AWS_SECRET_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Baixando env common do S3
+      run: |
+        cd .iac
+        oldIFS="$IFS"
+        IFS='
+        '
+        # COPY COMMON ENV FILE FROM S3 (OPTIONAL)
+        #aws s3 cp s3://$COMMON_ENV_BUCKET/$COMMON_ENV_PATH ./$branchdir/common.env
+
+        # TASK ENVIRONMENT VARIABLES
+        echo 'TF_VAR_ENVIRONMENTVAR<<EOF' >> $GITHUB_ENV
+        echo '[' >> $GITHUB_ENV
+        for i in `cat ./$branchdir/*.env`; do 
+          if [[ $i != \#* ]]; then
+            echo $i | awk -F= '{print "{"; print "\t\"name\" = " "\""$1"\"""," ; print "\t\"value\" = " "\""$2"\"" ; print "}," }' >> $GITHUB_ENV
+          fi
+        done
+        #echo '{}' >> $GITHUB_ENV
+        echo ']' >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
 
     - name: Terraform Init Dev
       run: |
         cd .iac
-
         terraform --version
         terraform init \
           --backend-config="key=${{ github.event.repository.name }}-${{ github.ref_name }}/terraform.tfstate" \
@@ -130,6 +152,3 @@ jobs:
         terraform validate
         terraform plan -out=tfplanfile
         terraform apply -input=false "tfplanfile"
-
-
-

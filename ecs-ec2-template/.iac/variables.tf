@@ -111,16 +111,10 @@ variable "ECRRETENTION" {
 
 
 variable "TAGS" {
-  type = list(any)
-  default = []
+  type = map(string)
 }
 
 variable "environment" {
-  type = string
-  default = null
-}
-
-variable "secrets" {
   type = string
   default = null
 }
@@ -134,10 +128,8 @@ variable "SECRETSVAR" {
   default = []
 }
 variable "TASKROLE" {
-  type = list(any)
-  default = []
+  type = string
 }
 variable "TASKEXECROLE" {
-  type = list(any)
-  default = []
+  type = string
 }

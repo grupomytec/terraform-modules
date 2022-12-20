@@ -45,3 +45,7 @@ TF_VAR_LOGSRETENTION=1
 
 # Number of images to save on ECR
 TF_VAR_ECRRETENTION=1
+
+# Dockerfile Path
+DOCKERFILEPATH=./Dockerfile
+
