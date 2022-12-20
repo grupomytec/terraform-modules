@@ -1,5 +1,5 @@
 variable "tags" {
-  type        = list(any)
+  type        = map(string)
   description = "Tags"
   default     = null
 }
