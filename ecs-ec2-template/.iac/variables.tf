@@ -1,13 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-  version = "<= 3.74.3"
-}
-
-terraform {
-  backend "s3" {}
-}
-
-
 variable "AWS_ACCESS_KEY" {
   type = string
 }

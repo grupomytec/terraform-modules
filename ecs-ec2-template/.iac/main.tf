@@ -1,3 +1,12 @@
+provider "aws" {
+  region = "us-east-1"
+  version = "<= 3.74.3"
+}
+
+terraform {
+  backend "s3" {}
+}
+
 module "ecs-module" {
   source                  = "./terraform/ecs-ec2"
   project                 = var.PROJECT
