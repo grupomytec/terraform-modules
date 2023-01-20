@@ -1,5 +1,8 @@
 # Local .terraform directories
 **/.terraform/*
+**/.iac/terraform
+.terraform.lock.hcl
+terraform.tfstate
 
 # .tfstate files
 *.tfstate
@@ -23,3 +26,7 @@ override.tf.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Non essential files
+TODO.md
+tests

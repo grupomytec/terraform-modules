@@ -1,0 +1,8 @@
+# Used AWS Region
+AWS_REGION=us-east-1
+
+# Used AWS Region
+TF_VAR_AWS_REGION=us-east-1
+
+# Created cluster name
+TF_VAR_CLUSTER_NAME=clusterECS
