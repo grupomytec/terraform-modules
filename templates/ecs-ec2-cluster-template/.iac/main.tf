@@ -5,14 +5,11 @@ terraform {
       version = "~> 3.74.3"
     }
   }
-}
-
-provider "aws" {
-  region = "us-east-1"
+  backend "s3" {}
 }
 
 module "ecs-cluster" {
-  source                  = "./terraform/ecs-cluster"
+  source                  = "../../../ecs-ec2-cluster"
   #############################
   #         App config        #
   #############################
@@ -21,4 +18,8 @@ module "ecs-cluster" {
   #      AWS environment      #
   #############################
   region                  = var.AWS_REGION
+  capacity_provider       = var.CAPACITY_PROVIDER
+  weight                  = var.WEIGHT
+  base                    = var.BASE
+  user_data               = var.USER_DATA
 }

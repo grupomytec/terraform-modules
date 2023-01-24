@@ -65,6 +65,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_exec_role" {
   role       = aws_iam_role.ecs_task_exec_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
 resource "aws_iam_role_policy" "ecs_task_exec_role_policy" {
   name = "ExecRole-${var.project}"
   role = aws_iam_role.ecs_task_exec_role.id
@@ -73,6 +74,7 @@ resource "aws_iam_role_policy" "ecs_task_exec_role_policy" {
   # Terraform expression result to valid JSON syntax.
   policy = var.task_exec_role
 }
+
 # Create Role for ECS Task 
 resource "aws_iam_role" "ecs_task_role" {
   name               = "ECSTaskRole-${var.project}"

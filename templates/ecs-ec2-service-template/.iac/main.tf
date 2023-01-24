@@ -1,14 +1,15 @@
-provider "aws" {
-  region = "us-east-1"
-  version = "<= 3.74.3"
-}
-
 terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.74.3"
+    }
+  }
   backend "s3" {}
 }
 
 module "ecs-module" {
-  source                  = "./terraform/ecs-ec2"
+  source                  = "../../../ecs-ec2-service"
   project                 = var.PROJECT
   #############################
   #         App config        #
