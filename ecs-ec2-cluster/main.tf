@@ -2,11 +2,6 @@
 #         ECS               #
 #############################
 
-# Create a ecs cluster
-resource "aws_ecs_cluster" "ecs_cluster" {
-  name = var.cluster_name
-}
-
 resource "aws_iam_role" "role" {
   name = "test-mt-aws_iam_role"
   path = "/"
@@ -57,9 +52,10 @@ resource "aws_launch_template" "launch_template" {
 resource "aws_autoscaling_group" "autoscaling_group" {
   name = "test-mt-aws_autoscaling_group"
   protect_from_scale_in = true
+  force_delete          = true
 
-  availability_zones = ["us-east-1a"]
-  default_cooldown   = 5
+  availability_zones = ["us-east-1a", "us-east-1b"]
+  default_cooldown   = 600
   desired_capacity   = 1
   max_size           = 1
   min_size           = 1
@@ -96,4 +92,9 @@ resource "aws_ecs_cluster_capacity_providers" "capacity_providers" {
     weight            = 100
     capacity_provider = aws_ecs_capacity_provider.capacity_provider.name
   }
+}
+
+# Create a ecs cluster
+resource "aws_ecs_cluster" "ecs_cluster" {
+  name = var.cluster_name
 }

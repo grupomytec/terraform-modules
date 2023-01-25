@@ -35,3 +35,6 @@ tests
 dockerfile
 .dockerignore
 scripts/
+
+# Python spotio
+.venv
