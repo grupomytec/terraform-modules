@@ -3,15 +3,15 @@
 #############################
 
 resource "aws_lb" "aws_alb" {
-  name            = "${var.cluster_name}-alb"
+  name            = "${var.cluster_name}aws_alb"
   security_groups = [aws_security_group.aws_sg_alb.id]
   subnets         = [aws_subnet.aws_subnets["aws_public_a"].id, aws_subnet.aws_subnets["aws_public_b"].id]
 
-  tags = merge(local.common_tags, { Name = "${var.cluster_name}-alb" })
+  # tags = merge(local.common_tags, { Name = "${var.cluster_name}-aws_alb" })
 }
 
 resource "aws_lb_target_group" "aws_lb_target" {
-  name     = "${var.cluster_name}-alb-tg"
+  name     = "${var.cluster_name}-aws_lb_target"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id

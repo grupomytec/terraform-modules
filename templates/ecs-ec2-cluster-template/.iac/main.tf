@@ -39,4 +39,5 @@ module "ecs-ec2-cluster" {
   #    ECS   #
   ############
   cluster_name              = var.CLUSTER_NAME
+  app_name                  = var.APP_NAME
 }

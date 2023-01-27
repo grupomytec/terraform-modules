@@ -24,9 +24,9 @@ variable "USER_DATA" {
 ############
 
 variable "AVAILABILITY_ZONES" {
-  type = list
+  type = string
   description = "Autoscaling Group Avaliability Zones"
-  default = ["us-east-1a", "us-east-1b"]
+  default = "us-east-1a"
 }
 
 variable "DEFAULT_COOLDOWN" {
@@ -92,5 +92,9 @@ variable "WEIGHT" {
 ############
 
 variable "CLUSTER_NAME" {
+  type = string
+}
+
+variable "APP_NAME" {
   type = string
 }

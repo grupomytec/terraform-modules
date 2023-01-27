@@ -1,28 +1,30 @@
 #!/bin/ash
+FULL_BUCKET_NAME="$APP_NAME-$ENVIRONMENT"
+TF_S3_STATE_DIR="terraform/$STAGE/terraform.tfstate"
 
-FULL_BUCKET_NAME=$1
-
-aws s3 ls | grep -w "$FULL_BUCKET_NAME" > /dev/null 2>&1
-if [ ! $? -eq 0 ]; then
-   echo -e "* bucket wasn't create yet\n"
-fi
-
-if [ -z "$FULL_BUCKET_NAME" ]; then
-   echo "* bucket-name wasn't set"
-   exit 1
-fi
-
-cat <<EOF > $3
-bucket="$TF_BUCKET_NAME"
-key="$4"
+cat <<EOF > $TF_S3_CREDENTIALS
+bucket="$FULL_BUCKET_NAME"
+key="$TF_S3_STATE_DIR"
 region="$AWS_REGION"
 EOF
 
+aws s3 ls | grep -w "$FULL_BUCKET_NAME" > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo -e "bucket already exists ...\n"
+    exit 0
+fi
+
+echo "* bucket wasn't created"
+
+if [ -z "$FULL_BUCKET_NAME" ]; then
+   echo "* bucket name's wasn't set"
+   exit 1
+fi
 
 TF_LOCAL_S3_DIR="/tmp/tf"
 TF_LOCAL_S3_FILE="$TF_LOCAL_S3_DIR/s3-create.tf"
 
-echo "starting creation of s3 bucket $FULL_BUCKET_NAME..."
+echo "starting creation of s3 bucket $FULL_BUCKET_NAME ..."
 
 mkdir -p "$TF_LOCAL_S3_DIR"
 

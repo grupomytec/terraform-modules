@@ -23,7 +23,7 @@ variable "user_data" {
 ############
 
 variable "availability_zones" {
-  type = list
+  type = string
   description = "Autoscaling Group Avaliability Zones"
 }
 
