@@ -1,0 +1,41 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+env:
+  CLUSTER_NAME: "cluster-ecs"
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  infra-create:
+    runs-on: ubuntu-latest
+    container:
+      image: <imagem>
+      env:
+        ENVIRONMENT: "prod"
+        BUCKET_NAME: "tf-bucket-$ENVIRONMENT"
+
+    steps:
+      - name: Create ecs cluster
+        run: ash ecs-setup.sh
+        if:  "github.ref == 'refs/heads/master'"
+        env:
+          STAGE: "ecs-cluster"
+
+      - name: Create ecs ec2
+        run: ash ecs-setup.sh
+        if:  "github.ref == 'refs/heads/master'"
+        env:
+          STAGE: "ecs-ec2"
+
+      - name: Configure spot
+        run: ash spot-config.sh
+        if:  "github.ref == 'refs/heads/master'"
+        env:
+          STAGE: "spot"

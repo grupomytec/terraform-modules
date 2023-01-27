@@ -94,3 +94,7 @@ variable "WEIGHT" {
 variable "CLUSTER_NAME" {
   type = string
 }
+
+variable "APP_NAME" {
+  type = string
+}
