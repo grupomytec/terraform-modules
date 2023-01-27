@@ -1,0 +1,7 @@
+.gitignore
+LICENSE
+README.md
+TODO.md
+tests/
+dockerfile
+.git

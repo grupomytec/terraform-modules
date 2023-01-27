@@ -31,10 +31,5 @@ Thumbs.db
 TODO.md
 tests
 
-# Docker files test
-dockerfile
-.dockerignore
-scripts/
-
 # Python spotio
 .venv
