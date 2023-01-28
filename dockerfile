@@ -21,7 +21,7 @@ ENV VIRTUAL_ENV=/opt/venv
 
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 
-ENV TERRAFORM_DIR="/terraform"
+ENV TERRAFORM_DIR="/opt/terraform"
 ENV PYTHON_SCRIPT="$TERRAFORM_DIR/ecs-ec2-spotio"
 ENV SCRIPT_DIR="$TERRAFORM_DIR/scripts"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
@@ -29,12 +29,14 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN apk update && apk add --no-cache terraform aws-cli python3 py3-pip
 
 WORKDIR $TERRAFORM_DIR
-
 COPY . .
 
 RUN chmod -R +x $SCRIPT_DIR/* && \
     chmod -R +x $PYTHON_SCRIPT/*
 
-WORKDIR $SCRIPT_DIR
+WORKDIR /usr/bin
+RUN ln -s $SCRIPT_DIR/ecs-manager.sh ecs-manager
+
+WORKDIR /
 
 CMD [ "/bin/ash" ]

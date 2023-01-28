@@ -10,7 +10,8 @@ if [ "$3" = "--destroy" ]; then
    export DESTROY=true
 fi
 
-export TERRAFORM_DIR="/terraform"
+export TERRAFORM_DIR="/opt/terraform"
+export SCRIPTS_DIR="$TERRAFORM_DIR/scripts"
 export TERRAFORM_TMP_DIR="/tmp/$STAGE"
 export TF_S3_CREDENTIALS="$TERRAFORM_TMP_DIR/tf-s3.env"
 export USER_DATA="$TERRAFORM_TMP_DIR/user_data.sh"
@@ -41,17 +42,21 @@ if [ -z "$STAGE" ]; then
 fi
 
 case $STAGE in
-"ecs-ec2-spotio") ash ecs-spotio.sh && exit 0 ;;
-"ecs-ec2-cluster") ash ecs-cluster.sh && export TF_VAR_USER_DATA=$( cat $USER_DATA | base64 -w 0 ) ;;
-"ecs-ec2-service") ash ecs-service.sh ;;
-"ecs-ec2-alb") ash ecs-alb.sh ;;
-*) echo "the stage \"$STAGE\" doesn't exists ..." exit 1;;
+"ecs-ec2-spotio") ash $SCRIPTS_DIR/ecs-spotio.sh && exit 0 ;;
+
+"ecs-ec2-cluster") ash $SCRIPTS_DIR/ecs-cluster.sh && export TF_VAR_USER_DATA=$( cat $USER_DATA | base64 -w 0 ) ;;
+
+"ecs-ec2-service") ash $SCRIPTS_DIR/ecs-service.sh ;;
+
+"ecs-ec2-alb") ash $SCRIPTS_DIR/ecs-alb.sh ;;
+*) 
+   echo "the stage \"$STAGE\" doesn't exists ..." && exit 1 ;;
 esac
 
 echo -e "starting terraform modules step...\n"
 
-ash s3-manager.sh
+ash $SCRIPTS_DIR/s3-manager.sh
 
 echo -e "* running terraform init on $PWD\n"
 
-ash run-tf.sh
+ash $SCRIPTS_DIR/tf-manager.sh
