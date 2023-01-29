@@ -29,8 +29,10 @@ jobs:
       image: <imagem>
 
     steps:
+      # run the pipeline regarding the creation of the ecs cluster with ec2
       - name: Create ecs ec2 cluster
         run: ecs-manager --stage ecs-ec2-cluster
 
+      # run the pipeline that imports ecs cluster to spotio
       - name: Import created ecs ec2 cluster to spotio
         run: ecs-manager --stage ecs-ec2-spotio

@@ -1,0 +1,35 @@
+---
+name: Checkov
+on:
+  push:
+    branches:
+      - master
+      - dev
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Test Modules
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ecs-ec2*
+          framework: terraform 
+      
+      - name: Test Templates
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          soft_fail: true
+          compact: true
+          framework: terraform 
