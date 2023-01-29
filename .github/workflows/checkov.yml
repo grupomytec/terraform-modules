@@ -17,15 +17,8 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
-
-      - name: Test Modules
-        id: checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: ecs-ec2*
-          framework: terraform 
       
-      - name: Test Templates
+      - name: Test Terraform
         id: checkov
         uses: bridgecrewio/checkov-action@master
         with:
