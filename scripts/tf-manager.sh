@@ -1,12 +1,18 @@
 #!/bin/ash
 
-cd $TERRAFORM_DIR/templates/$STAGE-template/.iac
+TF_PLAN_NAME="tf_plan"
+ENV_FILE="$ENV_DIR/$STAGE.env"
 
-echo "* source .env files from \"$ENVIRONMENT\""
+cd $TF_CURRENT_ROOT
+
+echo -e "* source .env files from \"$ENV_FILE\""
+
 set -a 
-source $ENV_DIR/*
+source "$ENV_FILE"
 
-terraform init -backend-config=$TF_S3_CREDENTIALS
+echo -e "\n"
+
+terraform init -backend-config=$BUCKET_CREDENTIALS
 
 if [ ! -z "$DESTROY" ]; then
    echo -e "* running terraform destroy on $PWD\n"
@@ -20,8 +26,8 @@ terraform validate
 
 echo -e "* running terraform plan on $PWD\n"
 
-terraform plan -out="tf_plan"
+terraform plan -out=$TF_PLAN_NAME
 
 echo -e "* running terraform apply on $PWD\n"
 
-terraform apply -input=false "tf_plan"
+terraform apply -input=false $TF_PLAN_NAME

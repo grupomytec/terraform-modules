@@ -1,23 +1,7 @@
-variable "AWS_ACCESS_KEY" {
-  type = string
-}
-
-variable "AWS_SECRET_KEY" {
-  type = string
-}
-
 variable "AWS_REGION" {
   type = string
 }
 variable "AWS_ACCOUNT_ID" {
-  type = string
-}
-
-variable "PROJECT" {
-  type = string
-}
-
-variable "BRANCH" {
   type = string
 }
 
@@ -78,11 +62,11 @@ variable "TG_HEALTHY_THRESHOLD" {
   type = string
 }
 
-variable "UNHEALTHY_THRESHOLD" {
+variable "TG_UNHEALTHY_THRESHOLD" {
   type = string
 }
 
-variable "LOADBALANCER" {
+variable "LOAD_BALANCER" {
   type = string
 }
 
@@ -90,36 +74,31 @@ variable "VPC" {
   type = string
 }
 
-variable "LOGSRETENTION" {
+variable "LOGS_RETENTION" {
   type = string
 }
 
-
-variable "ECRRETENTION" {
+variable "ECR_RETENTION" {
   type = string
 }
-
 
 variable "TAGS" {
   type = map(string)
 }
 
-variable "environment" {
+variable "TASK_ENVIRONMENT" {
   type = string
-  default = null
+}
+variable "TASK_SECRETS" {
+  type = string
+}
+variable "TASK_ROLE" {
+  type = string
+}
+variable "TASK_EXEC_ROLE" {
+  type = string
 }
 
-variable "ENVIRONMENTVAR" {
-  type = list(any)
-  default = []
-}
-variable "SECRETSVAR" {
-  type = list(any)
-  default = []
-}
-variable "TASKROLE" {
-  type = string
-}
-variable "TASKEXECROLE" {
+variable "APP_NAME" {
   type = string
 }

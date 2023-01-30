@@ -10,11 +10,11 @@ terraform {
 
 module "ecs-module" {
   source                  = "../../../ecs-ec2-service"
-  project                 = var.PROJECT
+  app_name                = var.APP_NAME
+  cluster_name            = var.CLUSTER_NAME
   #############################
   #         App config        #
   #############################
-  cluster_name            = var.CLUSTER_NAME
   sub_domain              = var.SUB_DOMAIN
   app_port                = var.APP_PORT
   cpu                     = var.CPU
@@ -28,19 +28,19 @@ module "ecs-module" {
   tg-path	                = var.TG_PATH
   tg-matcher              = var.TG_MATCHER
   tg-healthy_threshold    = var.TG_HEALTHY_THRESHOLD
-  tg-unhealthy_threshold  = var.UNHEALTHY_THRESHOLD
-  task_secrets            = var.SECRETSVAR
-  task_environment        = var.ENVIRONMENTVAR
-  task_role               = var.TASKROLE
-  task_exec_role          = var.TASKEXECROLE
+  tg-unhealthy_threshold  = var.TG_UNHEALTHY_THRESHOLD
+  task_secrets            = var.TASK_SECRETS
+  task_environment        = var.TASK_ENVIRONMENT
+  task_role               = var.TASK_ROLE
+  task_exec_role          = var.TASK_EXEC_ROLE
   #############################
   #      AWS environment      #
   #############################
-  accountid               = var.AWS_ACCOUNT_ID
+  account_id              = var.AWS_ACCOUNT_ID
   region                  = var.AWS_REGION
-  loadbalancer            = var.LOADBALANCER
+  load_balancer           = var.LOAD_BALANCER
   vpc                     = var.VPC
-  logsretention           = var.LOGSRETENTION
-  ecrretention            = var.ECRRETENTION
+  logs_retention          = var.LOGS_RETENTION
+  ecr_retention           = var.ECR_RETENTION
   tags                    = var.TAGS
 }

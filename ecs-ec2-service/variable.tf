@@ -25,12 +25,6 @@ variable "task_exec_role" {
   description = "Task exec role"
 }
 
-
-variable "project" {
-  type        = string
-  description = "Name of Project"
-}
-
 variable "sub_domain" {
   type        = string
   description = "Sub Domain App"
@@ -41,16 +35,15 @@ variable "app_port" {
   description = "Port Container"
 }
 
-variable "accountid" {
+variable "account_id" {
   type        = number
   description = "Account id  of the task"
 }
 
-variable "loadbalancer" {
+variable "load_balancer" {
   type        = string
   description = "Loadbalancer listener of the task"
 }
-
 
 variable "region" {
   type        = string
@@ -63,12 +56,12 @@ variable "vpc" {
 }
 
 
-variable "logsretention" {
+variable "logs_retention" {
   type        = number
   description = "Log retention days used in Tasks"
 }
 
-variable "ecrretention" {
+variable "ecr_retention" {
   type        = number
   description = "ECR Image Retention"
 }
@@ -136,4 +129,9 @@ variable "tg-unhealthy_threshold" {
 variable "cluster_name" {
   type = string
   description = "ECS Cluster"  
+}
+
+variable "app_name" {
+  type        = string
+  description = "Name of Project"
 }

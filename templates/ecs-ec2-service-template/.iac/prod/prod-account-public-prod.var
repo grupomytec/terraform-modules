@@ -14,7 +14,7 @@ TF_VAR_AWS_ACCOUNT_ID=000000000000
 TF_VAR_CLUSTER_NAME=clusterECS
 
 # Previous created listener application loadbalancer ARN
-TF_VAR_LOADBALANCER=arn:aws:elasticloadbalancing:us-east-1:000000000000:listener/app/loadbalancername/0d0983b17d4ccacb/95362ff40885be3d
+TF_VAR_LOAD_BALANCER=arn:aws:elasticloadbalancing:us-east-1:000000000000:listener/app/loadbalancername/0d0983b17d4ccacb/95362ff40885be3d
 
 # Previous created vcp id
 TF_VAR_VPC=vpc-0834g0nalsiliu40uh

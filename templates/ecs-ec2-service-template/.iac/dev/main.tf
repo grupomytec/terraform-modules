@@ -4,9 +4,8 @@
 
 # Create ECR Repository
 resource "aws_ecr_repository" "main" {
-  name = var.project
-
-  tags = var.tags
+  name = var.app_name
+  # tags = var.tags
 }
 
 # Lifecycle policy
@@ -18,11 +17,11 @@ resource "aws_ecr_lifecycle_policy" "main" {
     "rules": [
         {
             "rulePriority": 1,
-            "description": "Keep last ${var.ecrretention} of images",
+            "description": "Keep last ${var.ecr_retention} of images",
             "selection": {
                 "tagStatus": "any",
                 "countType": "imageCountMoreThan",
-                "countNumber": ${var.ecrretention}
+                "countNumber": ${var.ecr_retention}
             },
             "action": {
                 "type": "expire"
@@ -40,7 +39,7 @@ EOF
 
 # Create Role for ECS Task Execution
 resource "aws_iam_role" "ecs_task_exec_role" {
-  name               = "ECSTaskExecRole-${var.project}"
+  name               = "ECSTaskExecRole-${var.app_name}"
   assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -58,7 +57,7 @@ resource "aws_iam_role" "ecs_task_exec_role" {
     ]
 }
 EOF
-  tags               = var.tags
+  # tags               = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_exec_role" {
@@ -67,7 +66,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_exec_role" {
 }
 
 resource "aws_iam_role_policy" "ecs_task_exec_role_policy" {
-  name = "ExecRole-${var.project}"
+  name = "ExecRole-${var.app_name}"
   role = aws_iam_role.ecs_task_exec_role.id
 
   # Terraform's "jsonencode" function converts a
@@ -77,7 +76,7 @@ resource "aws_iam_role_policy" "ecs_task_exec_role_policy" {
 
 # Create Role for ECS Task 
 resource "aws_iam_role" "ecs_task_role" {
-  name               = "ECSTaskRole-${var.project}"
+  name               = "ECSTaskRole-${var.app_name}"
   assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -95,7 +94,7 @@ resource "aws_iam_role" "ecs_task_role" {
     ]
 }
 EOF
-  tags               = var.tags
+  # tags               = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_role" {
@@ -104,7 +103,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_role" {
 }
 
 resource "aws_iam_role_policy" "ecs_task_role_policy" {
-  name = "Role-${var.project}"
+  name = "Role-${var.app_name}"
   role = aws_iam_role.ecs_task_role.id
 
   # Terraform's "jsonencode" function converts a
@@ -114,7 +113,7 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
 
 # Create Task Definition
 resource "aws_ecs_task_definition" "main" {
-  family                   = var.project
+  family                   = var.app_name
   network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
   cpu                      = var.cpu
@@ -128,7 +127,7 @@ resource "aws_ecs_task_definition" "main" {
       "cpu": ${var.cpu},
       "image": "${aws_ecr_repository.main.repository_url}:latest",
       "memory": ${var.memory},
-      "name": "${var.project}",
+      "name": "${var.app_name}",
       "portMappings": [
         {
           "containerPort": ${var.app_port},
@@ -138,13 +137,13 @@ resource "aws_ecs_task_definition" "main" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/${var.project}",
+          "awslogs-group": "/ecs/${var.app_name}",
           "awslogs-region": "${var.region}",
           "awslogs-stream-prefix": "ecs"
         }
       },
-      "environment" : ${jsonencode(var.task_environment)},
-      "secrets": ${jsonencode(var.task_secrets)}
+      "environment" : ${jsondecode(file("${var.task_environment}"))}
+      "secrets": ${jsondecode(file("${var.task_secrets}"))}
     }
   ]
   DEFINITION
@@ -152,14 +151,14 @@ resource "aws_ecs_task_definition" "main" {
 
 # CloudWatch Group
 resource "aws_cloudwatch_log_group" "main" {
-  name              = "/ecs/${var.project}"
-  retention_in_days = var.logsretention
-  tags              = var.tags
+  name              = "/ecs/${var.app_name}"
+  retention_in_days = var.logs_retention
+  # tags              = var.tags
 }
 
 # Create Service
 resource "aws_ecs_service" "main" {
-  name            = "${var.project}-service"
+  name            = "${var.app_name}-service"
   cluster         = var.cluster_name
   task_definition = aws_ecs_task_definition.main.arn
   desired_count   = var.min_capacity
@@ -168,7 +167,7 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.main.id
-    container_name   = var.project
+    container_name   = var.app_name
     container_port   = var.app_port
   }
 
@@ -179,7 +178,7 @@ resource "aws_appautoscaling_target" "main" {
   max_capacity       = var.max_capacity
   min_capacity       = var.min_capacity
   resource_id        = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
-  role_arn           = "arn:aws:iam::${var.accountid}:role/ecsAutoscaleRole"
+  role_arn           = "arn:aws:iam::${var.account_id}:role/ecsAutoscaleRole"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 }
@@ -211,7 +210,7 @@ resource "random_string" "random" {
 
 # Target Group to App
 resource "aws_alb_target_group" "main" {
-  name        = "${substr(var.project, -27, -1)}-${random_string.random.result}"
+  name        = "${substr(var.app_name, -27, -1)}-${random_string.random.result}"
   port        = var.app_port
   protocol    = "HTTP"
   vpc_id      = var.vpc
@@ -234,7 +233,7 @@ resource "aws_alb_target_group" "main" {
 
 # Redirect all traffic from the ALB to the target group
 resource "aws_lb_listener_rule" "main" {
-  listener_arn = var.loadbalancer
+  listener_arn = var.load_balancer
 
   action {
     type             = "forward"

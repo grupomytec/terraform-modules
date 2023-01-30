@@ -2,7 +2,7 @@
 FULL_BUCKET_NAME="$APP_NAME-$ENVIRONMENT"
 TF_S3_STATE_DIR="terraform/$STAGE/terraform.tfstate"
 
-cat <<EOF > $TF_S3_CREDENTIALS
+cat <<EOF > $BUCKET_CREDENTIALS
 bucket="$FULL_BUCKET_NAME"
 key="$TF_S3_STATE_DIR"
 region="$AWS_REGION"
