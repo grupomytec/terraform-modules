@@ -1,5 +1,6 @@
 ---
 name: Delete
+run-name: Delete
 
 on: 
   workflow_dispatch:

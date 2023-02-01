@@ -1,5 +1,6 @@
 ---
 name: Create
+run-name: Create
 
 on: 
   workflow_dispatch:
