@@ -1,13 +1,8 @@
 name: Build
 
 on:
-  workflow_complete:
+  workflow_success:
     workflow: Checkov
-    types: [success]
-  push:
-    branches:
-      - main
-      - dev
 
 env:
   REGISTRY: ghcr.io

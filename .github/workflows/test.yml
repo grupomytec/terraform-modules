@@ -1,14 +1,9 @@
 name: Test
 
 on:
-  workflow_complete:
+  workflow_success:
     workflow: Build
-    types: [success]
-  push:
-    branches:
-      - main
-      - dev
-
+  
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -34,7 +29,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Create Cluster
         run: ecs-manager --stage ecs-ec2-cluster
       
