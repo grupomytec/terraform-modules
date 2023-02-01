@@ -28,9 +28,8 @@ jobs:
 
 
     steps:
-
-      - name: Create Service
-        run: ecs-manager --stage ecs-ec2-service
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Define Environment Directory
         run: |
