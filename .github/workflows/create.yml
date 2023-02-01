@@ -19,6 +19,7 @@ env:
 jobs:
 
   create:
+    environment: testing
     runs-on: ubuntu-latest
     container:
       image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
