@@ -17,7 +17,7 @@ jobs:
 
       env:
         ENVIRONMENT: dev
-        APP_NAME: "${{ github.repository }}"
+        APP_NAME: "${{ github.event.repository.name }}"
         CLUSTER_NAME: "app-mt-test"
         SPOTIO_ACCOUNT: "Rock Stage Dev"
         AWS_REGION: "${{ secrets.AWS_REGION }}"
