@@ -6,6 +6,7 @@ on: workflow_dispatch
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  ENVIRONMENT: dev
 
 jobs:
 
@@ -13,11 +14,11 @@ jobs:
     environment: testing
     runs-on: ubuntu-latest
     container:
-      image: $REGISTRY/$IMAGE_NAME
+      image: $REGISTRY/$IMAGE_NAME:$ENVIRONMENT
       env:
         APP_NAME: "${{ github.repository }}"
         CLUSTER_NAME: "app-mt-test"
-        ENVIRONMENT: "${{ github.head_ref || github.ref_name }}"
+        ENVIRONMENT: $ENVIRONMENT
         AWS_REGION: "${{ secrets.AWS_REGION }}"
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
