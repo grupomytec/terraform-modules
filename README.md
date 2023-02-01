@@ -34,13 +34,13 @@ To run the terraform templates the automation scripts can be called according to
 
 you can define any directory to store the reports just keep in mind that the files follow the pattern: 
 
-    ├── .iac                         <-- just remember to point it in the ENV_DIR or relative path in CONFIGS variable
-    └── test                         <-- just remember to point it in the ENV_DIR or relative path in CONFIGS variable
-        ├── app-secrets.json         <-- default application secrets file don't rename
-        ├── app.json                 <-- default application environment file don't rename
-        ├── ecs-ec2-alb.env          <-- default application load balancer config file not rename
-        ├── ecs-ec2-cluster.env      <-- default elastic cluster config file not rename
-        └── ecs-ec2-service.env      <-- default service/task config file not rename
+    ├── .iac                     <-- just remember to point it in the ENV_DIR or CONFIGS variable
+    └── test                     <-- just remember to point it in the ENV_DIR or CONFIGS variable
+        ├── app-secrets.json     <-- default application secrets file don't rename
+        ├── app.json             <-- default application environment file don't rename
+        ├── ecs-ec2-alb.env      <-- default application load balancer config file not rename
+        ├── ecs-ec2-cluster.env  <-- default elastic cluster config file not rename
+        └── ecs-ec2-service.env  <-- default service/task config file not rename
 
 then just configure the pipeline
     ...
