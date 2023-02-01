@@ -6,6 +6,11 @@ on:
     branches:
       - master
       - dev
+    paths:
+      - 'ecs-*/**'
+      - 'scripts/**'
+      - 'templates/**'
+      - 'dockerfile'
 
 env:
   REGISTRY: ghcr.io
