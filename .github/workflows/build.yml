@@ -1,6 +1,5 @@
 ---
 name: Checkov
-run-name: Checkov
 
 on:
   push:

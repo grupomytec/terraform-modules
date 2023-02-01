@@ -1,12 +1,7 @@
 ---
 name: Create
-run-name: Create
 
-on: 
-  workflow_dispatch:
-    inputs:
-      git-ref:
-        description: Trigger resource creation
+on: workflow_call
 
 env:
   REGISTRY: ghcr.io

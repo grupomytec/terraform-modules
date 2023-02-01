@@ -1,12 +1,8 @@
 ---
 name: Delete
-run-name: Delete
 
-on: 
-  workflow_dispatch:
-    inputs:
-      git-ref:
-        description: Trigger resource remove
+on: workflow_call
+
 
 env:
   REGISTRY: ghcr.io
