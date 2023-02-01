@@ -6,28 +6,24 @@ on: workflow_dispatch
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  APP_NAME: "${{ github.repository }}"
-  CLUSTER_NAME: "app-mt-test"
-  ENVIRONMENT: "${{ github.head_ref || github.ref_name }}"
-  AWS_REGION: "${{ secrets.AWS_REGION }}"
-  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-  SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
-  SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
-  SPOTIO_ACCOUNT: "Rock Stage Dev"
 
 jobs:
 
   delete:
     environment: testing
     runs-on: ubuntu-latest
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
-
     container:
-      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      image: $REGISTRY/$IMAGE_NAME
       env:
+        APP_NAME: "${{ github.repository }}"
+        CLUSTER_NAME: "app-mt-test"
+        ENVIRONMENT: "${{ github.head_ref || github.ref_name }}"
+        AWS_REGION: "${{ secrets.AWS_REGION }}"
+        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
+        SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
+        SPOTIO_ACCOUNT: "Rock Stage Dev"
         ENV_DIR: ".github/.iac/test"
 
     steps:
