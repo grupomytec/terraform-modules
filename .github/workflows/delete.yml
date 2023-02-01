@@ -15,7 +15,7 @@ env:
   AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }"
   SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
   SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
-  SPOTIO_ACCOUNT: "${{ secrets.SPOTIO_ACCOUNT }}"
+  SPOTIO_ACCOUNT: "Rock Stage Dev"
 
 jobs:
 
