@@ -1,7 +1,7 @@
 ---
 name: Create
 
-on: workflow_call
+on: workflow_dispatch
 
 environment: testing
 
