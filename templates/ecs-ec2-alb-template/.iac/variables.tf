@@ -84,17 +84,17 @@ variable "TG_HEALTH_CHECK_PATH" {
 #   LB LISTNER   #
 ##################
 
-variable "LB_PORT" {
+variable "ALB_PORT" {
   type = number
   description = "LB Listner Port"
 }
 
-variable "LB_PROTOCOL" {
+variable "ALB_PROTOCOL" {
   type = string
   description = "LB Listner Protocol"
 }
 
-variable "LB_DEFAULT_ACTION_TYPE" {
+variable "ALB_DEFAULT_ACTION_TYPE" {
   type = string
   description = "LB Listner Default Actions Type"
 }

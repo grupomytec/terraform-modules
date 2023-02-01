@@ -71,7 +71,26 @@ resource "aws_iam_role_policy" "ecs_task_exec_role_policy" {
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
-  policy = var.task_exec_role
+  # policy = var.task_exec_role
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "VisualEditor0",
+          "Effect": "Allow",
+          "Action": [
+              "secretsmanager:GetResourcePolicy",
+              "secretsmanager:GetSecretValue",
+              "secretsmanager:DescribeSecret",
+              "secretsmanager:ListSecretVersionIds",
+              "secretsmanager:TagResource"
+          ],
+          "Resource": "arn:aws:secretsmanager:us-east-1:${var.account_id}:secret:service-*"
+      }
+  ]
+}
+EOF
 }
 
 # Create Role for ECS Task 
@@ -108,7 +127,20 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
-  policy = var.task_role
+  # policy = var.task_role
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "VisualEditor1",
+          "Effect": "Allow",
+          "Action": "sqs:*",
+          "Resource": "arn:aws:sqs:us-east-1:${var.account_id}:service-*"
+      }
+  ]
+}
+EOF
 }
 
 # Create Task Definition
@@ -121,32 +153,32 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn       = aws_iam_role.ecs_task_exec_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 
-  container_definitions = <<DEFINITION
-  [
-    {
-      "cpu": ${var.cpu},
-      "image": "${aws_ecr_repository.main.repository_url}:latest",
-      "memory": ${var.memory},
-      "name": "${var.app_name}",
-      "portMappings": [
-        {
-          "containerPort": ${var.app_port},
-          "hostPort": 0
-        }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/${var.app_name}",
-          "awslogs-region": "${var.region}",
-          "awslogs-stream-prefix": "ecs"
-        }
-      },
-      "environment" : ${jsondecode(file("${var.task_environment}"))}
-      "secrets": ${jsondecode(file("${var.task_secrets}"))}
-    }
-  ]
-  DEFINITION
+  container_definitions = <<EOF
+[
+  {
+    "cpu": ${var.cpu},
+    "image": "${aws_ecr_repository.main.repository_url}:latest",
+    "memory": ${var.memory},
+    "name": "${var.app_name}",
+    "portMappings": [
+      {
+        "containerPort": ${var.app_port},
+        "hostPort": 0
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/${var.app_name}",
+        "awslogs-region": "${var.region}",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "environment" : ${var.task_environment},
+    "secrets": ${var.task_secrets}
+  }
+]
+EOF
 }
 
 # CloudWatch Group
@@ -166,7 +198,7 @@ resource "aws_ecs_service" "main" {
 
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.main.id
+    target_group_arn = var.load_balancer_target_group
     container_name   = var.app_name
     container_port   = var.app_port
   }
@@ -208,41 +240,18 @@ resource "random_string" "random" {
   lower            = true
  }
 
-# Target Group to App
-resource "aws_alb_target_group" "main" {
-  name        = "${substr(var.app_name, -27, -1)}-${random_string.random.result}"
-  port        = var.app_port
-  protocol    = "HTTP"
-  vpc_id      = var.vpc
-  target_type = "instance"
-
-  health_check {
-    interval            = var.tg-interval
-    path                = var.tg-path
-    timeout             = var.tg-timeout
-    matcher             = var.tg-matcher
-    healthy_threshold   = var.tg-healthy_threshold
-    unhealthy_threshold = var.tg-unhealthy_threshold
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-}
-
 # Redirect all traffic from the ALB to the target group
 resource "aws_lb_listener_rule" "main" {
-  listener_arn = var.load_balancer
+  listener_arn = var.load_balancer_listner
 
   action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.main.arn
+    target_group_arn = var.load_balancer_target_group
   }
 
   condition {
-    host_header {
-      values = ["${var.sub_domain}"]
+    path_pattern  {
+      values = ["/static/*"]
     }
   }
 

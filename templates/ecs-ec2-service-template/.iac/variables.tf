@@ -11,6 +11,7 @@ variable "CLUSTER_NAME" {
 
 variable "SUB_DOMAIN" {
   type = string
+  default = ""
 }
 
 variable "APP_PORT" {
@@ -60,31 +61,31 @@ variable "TG_MATCHER" {
 
 variable "TG_HEALTHY_THRESHOLD" {
   type = string
+  default = 5
 }
 
 variable "TG_UNHEALTHY_THRESHOLD" {
   type = string
+  default = 2
 }
 
-variable "LOAD_BALANCER" {
-  type = string
-}
-
-variable "VPC" {
-  type = string
-}
+#variable "LOAD_BALANCER" {
+#  type = string
+#}
 
 variable "LOGS_RETENTION" {
   type = string
+  default = 1
 }
 
 variable "ECR_RETENTION" {
   type = string
 }
 
-variable "TAGS" {
-  type = map(string)
-}
+#variable "TAGS" {
+#  type = map(string)
+#  default = ""
+#}
 
 variable "TASK_ENVIRONMENT" {
   type = string
@@ -92,13 +93,21 @@ variable "TASK_ENVIRONMENT" {
 variable "TASK_SECRETS" {
   type = string
 }
-variable "TASK_ROLE" {
-  type = string
-}
-variable "TASK_EXEC_ROLE" {
+#variable "TASK_ROLE" {
+#  type = string
+#}
+#variable "TASK_EXEC_ROLE" {
+#  type = string
+#}
+
+variable "APP_NAME" {
   type = string
 }
 
-variable "APP_NAME" {
+variable "LOAD_BALANCER_TARGET_GROUP" {
+  type = string
+}
+
+variable "LOAD_BALANCER_LISTNER" {
   type = string
 }

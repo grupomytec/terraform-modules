@@ -1,4 +1,4 @@
-if test -f "$LB_ARN_FILE"; then
+if test -f "$ALB_ARN_FILE"; then
     echo "* Using load balancer from \"$ARN_FILE\""
     exit 0
 fi

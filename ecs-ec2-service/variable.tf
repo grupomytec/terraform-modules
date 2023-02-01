@@ -5,25 +5,26 @@ variable "tags" {
 }
 
 variable "task_environment" {
-  type        = list(any)
+  type        = string
   description = "Task environment variables"
-  default     = null
+  default     = "{}"
 }
 
 variable "task_secrets" {
-  type        = list(any)
+  type        = string
   description = "Task environment secrets"
-  default     = null
+  default     = "{}"
 }
 
-variable "task_role" {
-  type        = string
-  description = "Task role"
-}
-variable "task_exec_role" {
-  type        = string
-  description = "Task exec role"
-}
+#variable "task_role" {
+#  type        = string
+#  description = "Task role"
+#}
+
+#variable "task_exec_role" {
+#  type        = string
+#  description = "Task exec role"
+#}
 
 variable "sub_domain" {
   type        = string
@@ -40,21 +41,25 @@ variable "account_id" {
   description = "Account id  of the task"
 }
 
-variable "load_balancer" {
-  type        = string
-  description = "Loadbalancer listener of the task"
-}
+#variable "load_balancer" {
+#  type        = string
+#  description = "Loadbalancer listener of the task"
+#}
 
 variable "region" {
   type        = string
   description = "Region of the task"
 }
 
-variable "vpc" {
+variable "load_balancer_target_group" {
   type        = string
-  description = "VPC ID used in Tasks"
+  description = "Load Balancer Target Group"
 }
 
+variable "load_balancer_listner" {
+  type        = string
+  description = "Load Balancer Listner"
+}
 
 variable "logs_retention" {
   type        = number

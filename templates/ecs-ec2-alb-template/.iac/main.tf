@@ -8,8 +8,8 @@ terraform {
   backend "s3" {}
 }
 
-module "ecs-ec2-lb" {
-  source                  = "../../../ecs-ec2-lb"
+module "ecs-ec2-alb" {
+  source                  = "../../../ecs-ec2-alb"
   #############################
   #      AWS environment      #
   #############################
@@ -41,7 +41,7 @@ module "ecs-ec2-lb" {
   ##################
   #   LB LISTNER   #
   ##################
-  lb_port                           = var.LB_PORT
-  lb_protocol                       = var.LB_PROTOCOL
-  lb_default_action_type            = var.LB_DEFAULT_ACTION_TYPE
+  alb_port                           = var.ALB_PORT
+  alb_protocol                       = var.ALB_PROTOCOL
+  alb_default_action_type            = var.ALB_DEFAULT_ACTION_TYPE
 }
