@@ -1,42 +1,48 @@
-name: deploy
+---
+name: Create
 
-on:
-  push:
-    branches:
-      - main
-      - dev
-
-env:
-  # dependency of the script with terraform and the other modules
-  APP_NAME: "${{ github.repository }}"
-  CLUSTER_NAME: "app-mt-test"
-  ENVIRONMENT: "${{ github.head_ref || github.ref_name }}"
-  ENV_DIR: ".iac/envs"
-  # aws environment variables dependency
-  AWS_REGION: "${{ secrets.AWS_REGION }}"
-  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }"
-  # spotio credentials
-  SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
-  SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
-  SPOTIO_ACCOUNT: "${{ secrets.SPOTIO_ACCOUNT }}"
+on: workflow_dispatch
 
 jobs:
-  infra:
+
+  create:
+    environment: any
     runs-on: ubuntu-latest
-    if:  "github.ref == 'refs/heads/master'"
     container:
-      image: <imagem>
+      image: ghcr.io.this.repo.image
+      credentials:
+        username: ""
+        password: ""
+
+      env:
+        ENVIRONMENT: ""
+        APP_NAME: ""
+        CLUSTER_NAME: ""
+        SPOTIO_ACCOUNT: ""
+        AWS_REGION: ""
+        AWS_ACCESS_KEY_ID: ""
+        AWS_SECRET_ACCESS_KEY: ""
+        SPOTIO_AUTH_USER: ""
+        SPOTIO_AUTH_TOKEN: ""
+        CONFIGS: ".iac/test"
 
     steps:
-      # run the pipeline regarding the creation of the ecs cluster with ec2
-      - name: Create ecs ec2 cluster
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Define Environment Directory
+        run: |
+          export ENV_DIR="$PWD/$CONFIGS"
+
+      - name: Create Cluster
         run: ecs-manager --stage ecs-ec2-cluster
       
-      # run the pipeline that imports ecs cluster to spotio
-      - name: Import created ecs ec2 cluster to spotio
-        run: ecs-manager --stage ecs-ec2-lb
+      - name: Create Alb
+        run: ecs-manager --stage ecs-ec2-alb
 
-      # run the pipeline that imports ecs cluster to spotio
-      - name: Import created ecs ec2 cluster to spotio
+      - name: Import Cluster
         run: ecs-manager --stage ecs-ec2-spotio
+      
+      - name: Create Service
+        run: ecs-manager --stage ecs-ec2-service

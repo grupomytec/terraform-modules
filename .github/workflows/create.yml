@@ -8,9 +8,9 @@ jobs:
   create:
     environment: testing
     runs-on: ubuntu-latest
+
     container:
       image: ghcr.io/${{ github.repository }}:dev
-
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
@@ -25,15 +25,15 @@ jobs:
         AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
         SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
         SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
+        CONFIGS: ".iac/test"
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Define Environment Directory
         run: |
-          export ENV_DIR="$PWD/.iac/test"
+          export ENV_DIR="$PWD/$CONFIGS"
 
       - name: Create Cluster
         run: ecs-manager --stage ecs-ec2-cluster

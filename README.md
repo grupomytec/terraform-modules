@@ -30,22 +30,60 @@ For everything to work correctly you need to define some basic variables for the
 
 ### Running scripts pipeline
 
-To run the terraform templates the automation scripts can be called according to the templade naming as follows.
+To run the terraform templates the automation scripts can be called according to the templade naming as follows. Pay attention to the definition of the **ENV_DIR** variable, this is where we define all the environment and application settings, for that there is a directory structure.
 
+you can define any directory to store the reports just keep in mind that the files follow the pattern: 
+
+    ├── .iac                         <-- just remember to point it in the ENV_DIR or relative path in CONFIGS variable
+    └── test                         <-- just remember to point it in the ENV_DIR or relative path in CONFIGS variable
+        ├── app-secrets.json         <-- default application secrets file don't rename
+        ├── app.json                 <-- default application environment file don't rename
+        ├── ecs-ec2-alb.env          <-- default application load balancer config file not rename
+        ├── ecs-ec2-cluster.env      <-- default elastic cluster config file not rename
+        └── ecs-ec2-service.env      <-- default service/task config file not rename
+
+then just configure the pipeline
     ...
-    env:
-        export APP_NAME=""
-        export CLUSTER_NAME=""
-        export ENVIRONMENT=""
-        export ENV_DIR=""
+    
+    jobs:
+
+      create:
+        environment: ""
+        runs-on: ubuntu-latest
+        container:
+          image: ghcr.io/${{ github.repository }}:dev
+        env:
+          ENVIRONMENT: ""
+          APP_NAME: ""
+          CLUSTER_NAME: ""
+          SPOTIO_ACCOUNT: ""
+          AWS_REGION: ""
+          AWS_ACCESS_KEY_ID: ""
+          AWS_SECRET_ACCESS_KEY: ""
+          SPOTIO_AUTH_USER: ""
+          SPOTIO_AUTH_TOKEN: ""
+          CONFIGS: ""
+          ...
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Define Environment Directory
+        run: |
+          export ENV_DIR="$PWD/$CONFIGS"
+
+      - name: Create Cluster
+        run: ecs-manager --stage ecs-ec2-cluster
+      
+      - name: Create Alb
+        run: ecs-manager --stage ecs-ec2-alb
+
+      - name: Import Cluster
+        run: ecs-manager --stage ecs-ec2-spotio
+      
+      - name: Create Service
+        run: ecs-manager --stage ecs-ec2-service
         ...
-
-    - name: Create ecs ec2 cluster
-      run: ecs-manager --stage ecs-ec2-cluster
-
-    - name: Import created ecs ec2 cluster to spotio
-      run: ecs-manager --stage ecs-ec2-spotio
-    ...
 
 ###  How to implement as pipeline
 
