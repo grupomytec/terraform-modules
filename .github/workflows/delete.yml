@@ -21,7 +21,6 @@ jobs:
 
   delete:
     runs-on: ubuntu-latest
-    if:  "github.ref == 'refs/heads/master'"
     container:
       image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     env:
