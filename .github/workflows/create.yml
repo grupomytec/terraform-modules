@@ -16,16 +16,16 @@ jobs:
         password: ${{ secrets.github_token }}
 
       env:
+        ENVIRONMENT: dev
         APP_NAME: "${{ github.repository }}"
         CLUSTER_NAME: "app-mt-test"
-        ENVIRONMENT: dev
+        SPOTIO_ACCOUNT: "Rock Stage Dev"
+        ENV_DIR: "./.github/.iac/test/$ENVIRONMENT"
         AWS_REGION: "${{ secrets.AWS_REGION }}"
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
         SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
         SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
-        SPOTIO_ACCOUNT: "Rock Stage Dev"
-        ENV_DIR: ".github/.iac/test"
 
     steps:
 
