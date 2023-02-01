@@ -37,10 +37,13 @@ jobs:
           export ENV_DIR="$PWD/.iac/test"
 
       - name: Import Cluster
-        run: ecs-manager --stage ecs-ec2-spotio
+        run: ecs-manager --stage ecs-ec2-spotio --destroy
+
+      - name: Create Service
+        run: ecs-manager --stage ecs-ec2-service --destroy
+
+      - name: Create Alb
+        run: ecs-manager --stage ecs-ec2-alb --destroy
 
       - name: Create Cluster
-        run: ecs-manager --stage ecs-ec2-cluster
-      
-      - name: Create Alb
-        run: ecs-manager --stage ecs-ec2-lb
+        run: ecs-manager --stage ecs-ec2-cluster --destroy

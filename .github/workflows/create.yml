@@ -39,7 +39,7 @@ jobs:
         run: ecs-manager --stage ecs-ec2-cluster
       
       - name: Create Alb
-        run: ecs-manager --stage ecs-ec2-lb
+        run: ecs-manager --stage ecs-ec2-alb
 
       - name: Import Cluster
         run: ecs-manager --stage ecs-ec2-spotio
