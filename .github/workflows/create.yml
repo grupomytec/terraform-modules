@@ -3,6 +3,9 @@ name: Create
 
 on: 
   workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Trigger resource creation
 
 env:
   REGISTRY: ghcr.io

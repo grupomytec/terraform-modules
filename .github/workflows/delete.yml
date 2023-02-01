@@ -3,6 +3,9 @@ name: Delete
 
 on: 
   workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Trigger resource remove
 
 env:
   REGISTRY: ghcr.io
