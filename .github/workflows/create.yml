@@ -3,8 +3,6 @@ name: Create
 
 on: workflow_dispatch
 
-environment: testing
-
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -21,6 +19,7 @@ env:
 jobs:
 
   create:
+    environment: testing
     runs-on: ubuntu-latest
     container:
       image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
