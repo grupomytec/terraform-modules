@@ -21,6 +21,9 @@ jobs:
   delete:
     environment: testing
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
 
     container:
       image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}

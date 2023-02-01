@@ -4,8 +4,6 @@ name: Create
 on: workflow_dispatch
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
   APP_NAME: "${{ github.repository }}"
   CLUSTER_NAME: "app-mt-test"
   ENVIRONMENT: "${{ github.head_ref || github.ref_name }}"
@@ -17,10 +15,12 @@ env:
   SPOTIO_ACCOUNT: "Rock Stage Dev"
 
 jobs:
-
   create:
     environment: testing
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
 
     container:
       image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
