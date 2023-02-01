@@ -3,22 +3,22 @@ name: Delete
 
 on: workflow_dispatch
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-  ENVIRONMENT: dev
-
 jobs:
 
   delete:
     environment: testing
     runs-on: ubuntu-latest
     container:
-      image: ${{ REGISTRY }}/${{ IMAGE_NAME }}:${{ ENVIRONMENT }}
+      image: ghcr.io/${{ github.repository }}:dev
+
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
       env:
         APP_NAME: "${{ github.repository }}"
         CLUSTER_NAME: "app-mt-test"
-        ENVIRONMENT: ${{ ENVIRONMENT }}
+        ENVIRONMENT: dev
         AWS_REGION: "${{ secrets.AWS_REGION }}"
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
