@@ -1,8 +1,10 @@
 name: Build
 
 on:
-  workflow_success:
-    workflow: Checkov
+  workflow_run:
+    workflows: ["Checkov"]
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
