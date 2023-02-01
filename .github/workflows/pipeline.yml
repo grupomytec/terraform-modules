@@ -10,15 +10,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  APP_NAME: "${{ github.repository }}"
-  CLUSTER_NAME: "app-mt-test"
-  ENVIRONMENT: "${{ github.head_ref || github.ref_name }}"
-  AWS_REGION: "${{ secrets.AWS_REGION }}"
-  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }"
-  SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
-  SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
-  SPOTIO_ACCOUNT: "${{ secrets.SPOTIO_ACCOUNT }}"
 
 jobs:
 
@@ -69,51 +60,3 @@ jobs:
             push: true
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
-
-    create:
-      needs: build
-      runs-on: ubuntu-latest
-      if:  "github.ref == 'refs/heads/master'"
-      container:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      env:
-        ENV_DIR: ".github/workflows/.iac/test"
-
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
-
-        - name: Create Cluster
-          run: ecs-manager --stage ecs-ec2-cluster
-        
-        - name: Create Alb
-          run: ecs-manager --stage ecs-ec2-lb
-
-        - name: Import Cluster
-          run: ecs-manager --stage ecs-ec2-spotio
-        
-        - name: Create Service
-          run: ecs-manager --stage ecs-ec2-service
-
-  delete:
-    needs: [buid, create]
-    runs-on: ubuntu-latest
-    if:  "github.ref == 'refs/heads/master'"
-    container:
-      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-    env:
-      ENV_DIR: ".iac/envs/test"
-
-    steps:
-
-      - name: Create Service
-        run: ecs-manager --stage ecs-ec2-service
-
-      - name: Import Cluster
-        run: ecs-manager --stage ecs-ec2-spotio
-
-      - name: Create Cluster
-        run: ecs-manager --stage ecs-ec2-cluster
-      
-      - name: Create Alb
-        run: ecs-manager --stage ecs-ec2-lb
