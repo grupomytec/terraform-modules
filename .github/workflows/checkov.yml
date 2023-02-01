@@ -1,5 +1,6 @@
 ---
 name: Checkov
+
 on:
   push:
     branches:

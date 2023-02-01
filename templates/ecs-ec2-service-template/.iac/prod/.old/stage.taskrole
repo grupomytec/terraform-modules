@@ -5,7 +5,7 @@
           "Sid": "VisualEditor1",
           "Effect": "Allow",
           "Action": "sqs:*",
-          "Resource": "arn:aws:sqs:us-east-1:*:service-*"
+          "Resource": "arn:aws:sqs:us-east-1:000000000000:service-*"
       }
   ]
 }

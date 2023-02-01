@@ -2,4 +2,4 @@
 "project"       = "ProjectName"
 "tribe"         = "TribeName"
 "costcenter"    = "CostCenterName"
-"environment"   = "Production"
+"environment"   = "Development"
