@@ -34,7 +34,7 @@ jobs:
           echo $ENV_DIR
 
       - name: Create Cluster
-        run: ecs-manager --stage ecs-fargate-cluster
+        run: echo $ENV_DIR && ecs-manager --stage ecs-fargate-cluster
 
       - name: Create Service
         run: ecs-manager --stage ecs-fargate-service
