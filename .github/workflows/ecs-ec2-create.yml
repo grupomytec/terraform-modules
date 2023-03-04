@@ -1,5 +1,5 @@
 ---
-name: Create
+name: Create ECS EC2
 
 on: workflow_dispatch
 

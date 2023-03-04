@@ -1,5 +1,5 @@
 ---
-name: Create
+name: Create ECS Fargate
 
 on: workflow_dispatch
 

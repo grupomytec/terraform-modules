@@ -1,5 +1,5 @@
 ---
-name: Delete
+name: Delete ECS EC2
 
 on: workflow_dispatch
 
