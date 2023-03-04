@@ -4,7 +4,7 @@ name: Checkov
 on:
   push:
     branches:
-      - master
+      - main
       - dev
     paths:
       - 'ecs-*/**'
