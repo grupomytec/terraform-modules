@@ -9,7 +9,7 @@ terraform {
 }
 
 module "ecs-ec2-alb" {
-  source                  = "../../../ecs-ec2-alb"
+  source                  = "../../ecs-ec2-alb"
   #############################
   #      AWS environment      #
   #############################

@@ -9,7 +9,7 @@ terraform {
 }
 
 module "ecs-ec2-cluster" {
-  source                  = "../../ecs-ec2-cluster"
+  source                  = "../../ecs-fargate-cluster"
   #############################
   #      AWS environment      #
   #############################
@@ -18,7 +18,7 @@ module "ecs-ec2-cluster" {
   ############
   image_id                  = var.IMAGE_ID
   instance_type             = var.INSTANCE_TYPE
-  user_data                 = var.USER_DATA
+  #user_data                 = var.USER_DATA
   ############
   #    ASG   #
   ############

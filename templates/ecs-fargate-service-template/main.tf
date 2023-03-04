@@ -8,8 +8,8 @@ terraform {
   backend "s3" {}
 }
 
-module "ecs-module" {
-  source                      = "../../ecs-ec2-service"
+module "ecs-fargate-service-module" {
+  source                      = "../../ecs-fargate-service"
   app_name                    = var.APP_NAME
   cluster_name                = var.CLUSTER_NAME
   #############################
@@ -33,6 +33,8 @@ module "ecs-module" {
   task_environment            = var.TASK_ENVIRONMENT
   #task_role                   = var.TASK_ROLE
   #task_exec_role              = var.TASK_EXEC_ROLE
+  service_security_group      = var.SERVICE_SECURITY_GROUP 
+  service_subnets             = var.SERVICE_SUBNETS
   #############################
   #      AWS environment      #
   #############################

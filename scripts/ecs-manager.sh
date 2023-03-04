@@ -15,7 +15,8 @@ export SCRIPTS_DIR="$TERRAFORM_DIR/scripts"
 export TERRAFORM_TMP_DIR="/tmp/$STAGE"
 export BUCKET_CREDENTIALS="$TERRAFORM_TMP_DIR/tf-s3.env"
 export USER_DATA="$TERRAFORM_TMP_DIR/user_data.sh"
-export TF_CURRENT_ROOT="$TERRAFORM_DIR/templates/$STAGE-template/.iac"
+#export TF_CURRENT_ROOT="$TERRAFORM_DIR/templates/$STAGE-template/.iac"
+export TF_CURRENT_ROOT="$TERRAFORM_DIR/templates/$STAGE-template"
 export APP_ENVS="$TERRAFORM_TMP_DIR"
 
 export ALB_TG_ARN_FILE="$TERRAFORM_DIR/$STAGE/alb_target_group_arn.txt"
@@ -81,6 +82,12 @@ case $STAGE in
 "ecs-ec2-service") ash $SCRIPTS_DIR/ecs-service.sh && \
                   export TF_VAR_TASK_ENVIRONMENT=$( cat "$APP_ENV_FILE" )  && \
                   export TF_VAR_TASK_SECRETS=$( cat "$APP_ENV_SECRETS_FILE" )  ;;
+
+"ecs-fargate-service") ash $SCRIPTS_DIR/ecs-service.sh && \
+                  export TF_VAR_TASK_ENVIRONMENT=$( cat "$APP_ENV_FILE" )  && \
+                  export TF_VAR_TASK_SECRETS=$( cat "$APP_ENV_SECRETS_FILE" )  ;;
+
+"ecs-fargate-cluster") ;;  #;;
 
 "ecs-ec2-alb") ;;  #ash $SCRIPTS_DIR/ecs-lb.sh ;;
 
