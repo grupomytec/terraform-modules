@@ -35,6 +35,12 @@ jobs:
           echo "saida --- > $PWD"
           echo "saida --- > $CONFIGS"
 
+      - name: Test Environment Directory
+        run: |
+          echo "saida --- > $ENV_DIR"
+          echo "saida --- > $PWD"
+          echo "saida --- > $CONFIGS"
+
       - name: Create Cluster
         run: echo $ENV_DIR && ecs-manager --stage ecs-fargate-cluster
 
