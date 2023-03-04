@@ -31,7 +31,9 @@ jobs:
       - name: Define Environment Directory
         run: |
           export ENV_DIR="$PWD/$CONFIGS"
-          echo $ENV_DIR
+          echo "saida --- > $ENV_DIR"
+          echo "saida --- > $PWD"
+          echo "saida --- > $CONFIGS"
 
       - name: Create Cluster
         run: echo $ENV_DIR && ecs-manager --stage ecs-fargate-cluster
