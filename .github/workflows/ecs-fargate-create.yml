@@ -31,6 +31,7 @@ jobs:
       - name: Define Environment Directory
         run: |
           export ENV_DIR="$PWD/$CONFIGS"
+          echo $ENV_DIR
 
       - name: Create Cluster
         run: ecs-manager --stage ecs-fargate-cluster
