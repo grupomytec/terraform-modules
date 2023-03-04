@@ -30,16 +30,11 @@ jobs:
 
       - name: Define Environment Directory
         run: |
-          export ENV_DIR="$PWD/$CONFIGS"
-          echo "saida --- > $ENV_DIR"
-          echo "saida --- > $PWD"
-          echo "saida --- > $CONFIGS"
+          echo "ENV_DIR=$PWD/$CONFIGS" >> $GITHUB_ENV
 
-      - name: Test Environment Directory
+      - name: Testing Environment
         run: |
-          echo "saida --- > $ENV_DIR"
-          echo "saida --- > $PWD"
-          echo "saida --- > $CONFIGS"
+          echo $ENV_DIR
 
       - name: Create Cluster
         run: echo $ENV_DIR && ecs-manager --stage ecs-fargate-cluster
