@@ -1,0 +1,48 @@
+---
+name: Delete
+
+on: workflow_dispatch
+
+jobs:
+
+  delete:
+    environment: testing
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}:dev
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
+      env:       
+        ENVIRONMENT: dev
+        APP_NAME: "${{ github.event.repository.name }}"
+        CLUSTER_NAME: "app-mt-test"
+        AWS_REGION: "${{ secrets.AWS_REGION }}"
+        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        SPOTIO_ACCOUNT: "Rock Stage Dev"
+        SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
+        SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
+        CONFIGS: ".iac/test"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Define Environment Directory
+        run: |
+          export ENV_DIR="$PWD/$CONFIGS"
+
+      - name: Remove Imported Cluster
+        run: ecs-manager --stage ecs-ec2-spotio --destroy
+
+      - name: Remove Service
+        run: ecs-manager --stage ecs-ec2-service --destroy
+
+      - name: Remove Alb
+        run: ecs-manager --stage ecs-ec2-alb --destroy
+
+      - name: Remove Cluster
+        run: ecs-manager --stage ecs-ec2-cluster --destroy

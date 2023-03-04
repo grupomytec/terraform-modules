@@ -17,15 +17,14 @@ jobs:
 
       env:
         ENVIRONMENT: dev
-        APP_NAME: "test-a"
-        #APP_NAME: "${{ github.event.repository.name }}"
+        APP_NAME: "${{ github.event.repository.name }}"
         CLUSTER_NAME: "app-mt-test"
         AWS_REGION: "${{ secrets.AWS_REGION }}"
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-        #SPOTIO_ACCOUNT: "Rock Stage Dev"
-        #SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
-        #SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
+        SPOTIO_ACCOUNT: "Rock Stage Dev"
+        SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
+        SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
         CONFIGS: ".iac/test"
 
     steps:
@@ -36,20 +35,14 @@ jobs:
         run: |
           export ENV_DIR="$PWD/$CONFIGS"
 
-      #- name: Create Cluster
-      #  run: ecs-manager --stage ecs-ec2-cluster
-      
-      #- name: Create Alb
-      #  run: ecs-manager --stage ecs-ec2-alb
-
-      #- name: Import Cluster
-      #  run: ecs-manager --stage ecs-ec2-spotio
-      
-      #- name: Create Service
-      #  run: ecs-manager --stage ecs-ec2-service
-
       - name: Create Cluster
-        run: ecs-manager --stage ecs-fargate-cluster
+        run: ecs-manager --stage ecs-ec2-cluster
+      
+      - name: Create Alb
+        run: ecs-manager --stage ecs-ec2-alb
 
+      - name: Import Cluster
+        run: ecs-manager --stage ecs-ec2-spotio
+      
       - name: Create Service
-        run: ecs-manager --stage ecs-fargate-service
+        run: ecs-manager --stage ecs-ec2-service

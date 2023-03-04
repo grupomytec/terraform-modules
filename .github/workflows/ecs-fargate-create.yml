@@ -1,0 +1,39 @@
+---
+name: Create
+
+on: workflow_dispatch
+
+jobs:
+
+  create:
+    environment: testing
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/${{ github.repository }}:dev
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
+      env:
+        ENVIRONMENT: dev
+        APP_NAME: "${{ github.event.repository.name }}"
+        CLUSTER_NAME: "app-mt-test"
+        AWS_REGION: "${{ secrets.AWS_REGION }}"
+        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+        CONFIGS: ".iac/ecs-fargate"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Define Environment Directory
+        run: |
+          export ENV_DIR="$PWD/$CONFIGS"
+
+      - name: Create Cluster
+        run: ecs-manager --stage ecs-fargate-cluster
+
+      - name: Create Service
+        run: ecs-manager --stage ecs-fargate-service
