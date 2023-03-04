@@ -49,7 +49,7 @@ jobs:
       #  run: ecs-manager --stage ecs-ec2-cluster --destroy
 
       - name: Create Cluster
-        run: ecs-manager --stage ecs-ec2-cluster --destroy
+        run: ecs-manager --stage ecs-fargate-cluster --destroy
 
       - name: Create Service
-        run: ecs-manager --stage ecs-ec2-service --destroy
+        run: ecs-manager --stage ecs-fargate-service --destroy
