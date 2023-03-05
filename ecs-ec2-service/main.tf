@@ -190,7 +190,7 @@ resource "aws_cloudwatch_log_group" "main" {
 
 # Create Service
 resource "aws_ecs_service" "main" {
-  name            = "${var.app_name}-service"
+  name            = "${var.app_name}"
   cluster         = var.cluster_name
   task_definition = aws_ecs_task_definition.main.arn
   desired_count   = var.min_capacity
