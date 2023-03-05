@@ -38,7 +38,7 @@ module "ecs-fargate-service-module" {
   target_group_port           = var.TARGET_GROUP_PORT
   target_group_protocol       = var.TARGET_GROUP_PROTOCOL
   target_group_vpc            = var.TARGET_GROUP_VPC
-  target_group_target_typ     = var.TARGET_GROUP_TARGET_TYP
+  target_group_target_type    = var.TARGET_GROUP_TARGET_TYP
   #############################
   #      AWS environment      #
   #############################
