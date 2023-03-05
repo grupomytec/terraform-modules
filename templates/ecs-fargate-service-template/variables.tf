@@ -125,9 +125,9 @@ variable "APP_NAME" {
   type = string
 }
 
-variable "LOAD_BALANCER_TARGET_GROUP" {
-  type = string
-}
+#variable "LOAD_BALANCER_TARGET_GROUP" {
+#  type = string
+#}
 
 variable "LOAD_BALANCER_LISTNER" {
   type = string
