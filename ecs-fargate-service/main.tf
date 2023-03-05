@@ -241,33 +241,6 @@ resource "aws_cloudwatch_log_group" "main" {
 
 # }
 
-resource "aws_ecs_service" "main" {
-  name                              = "${var.app_name}"
-  cluster                           = var.cluster_name
-  task_definition                    = aws_ecs_task_definition.main.arn
-  desired_count                      = 2
-  deployment_minimum_healthy_percent = 50
-  deployment_maximum_percent         = 200
-  launch_type                        = "FARGATE"
-  scheduling_strategy                = "REPLICA"
-  
-  network_configuration {
-    security_groups  = var.service_security_group
-    subnets          = var.service_subnets
-    assign_public_ip = false
-  }
-
-  load_balancer {
-    target_group_arn = var.load_balancer_target_group
-    container_name   = var.app_name
-    container_port   = var.app_port
-  }
- 
-  lifecycle {
-    ignore_changes = [task_definition, desired_count]
-  }
-}
-
 # Autoscaling Target
 resource "aws_appautoscaling_target" "main" {
   max_capacity       = var.max_capacity
@@ -304,12 +277,20 @@ resource "random_string" "random" {
  }
 
 # Redirect all traffic from the ALB to the target group
+resource "aws_alb_target_group" "aws_alb_target" {
+  name        = "${replace(var.app_name, "/\\W|_|\\s/", "-")}"
+  port        = var.target_group_port
+  protocol    = var.target_group_protocol
+  vpc_id      = var.target_group_vpc
+  target_type = var.target_group_target_type
+}
+
 resource "aws_lb_listener_rule" "main" {
   listener_arn = var.load_balancer_listner
 
   action {
     type             = "forward"
-    target_group_arn = var.load_balancer_target_group
+    target_group_arn = aws_alb_target_group.load_balancer_target_group.id
   }
 
   condition {
@@ -318,4 +299,31 @@ resource "aws_lb_listener_rule" "main" {
     }
   }
 
+}
+
+resource "aws_ecs_service" "main" {
+  name                              = "${var.app_name}"
+  cluster                           = var.cluster_name
+  task_definition                    = aws_ecs_task_definition.main.arn
+  desired_count                      = 2
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent         = 200
+  launch_type                        = "FARGATE"
+  scheduling_strategy                = "REPLICA"
+  
+  network_configuration {
+    security_groups  = var.service_security_group
+    subnets          = var.service_subnets
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.load_balancer_target_group.id
+    container_name   = var.app_name
+    container_port   = var.app_port
+  }
+ 
+  lifecycle {
+    ignore_changes = [task_definition, desired_count]
+  }
 }
