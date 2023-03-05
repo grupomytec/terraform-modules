@@ -17,7 +17,7 @@ jobs:
 
       env:
         ENVIRONMENT: dev
-        APP_NAME: "${{ github.event.repository.name }}"
+        APP_NAME: "${{ github.event.repository.name }}-test"
         CLUSTER_NAME: "app-mt-test"
         AWS_REGION: "${{ secrets.AWS_REGION }}"
         AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
