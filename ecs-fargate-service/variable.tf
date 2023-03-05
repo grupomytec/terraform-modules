@@ -51,6 +51,27 @@ variable "account_id" {
   description = "Account id  of the task"
 }
 
+variable "target_group_port" {
+  type        = number
+  description = "Target Group Port"
+}
+
+variable "target_group_protocol" {
+  type        = string
+  description = "Target Group Protocol"
+}
+
+variable "target_group_vpc" {
+  type        = string
+  description = "Target Group VPC"
+}
+
+variable "target_group_target_type" {
+  type        = string
+  description = "Target Group Typer"
+}
+
+
 #variable "load_balancer" {
 #  type        = string
 #  description = "Loadbalancer listener of the task"
