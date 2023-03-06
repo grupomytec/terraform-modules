@@ -140,3 +140,7 @@ variable "SERVICE_SECURITY_GROUP" {
 variable "SERVICE_SUBNETS" {
   type = list
 }
+
+variable "ASSIGN_PUBLIC_IP" {
+  type        = bool
+}

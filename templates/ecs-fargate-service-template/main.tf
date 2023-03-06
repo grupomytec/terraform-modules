@@ -31,14 +31,13 @@ module "ecs-fargate-service-module" {
   tg-unhealthy_threshold      = var.TG_UNHEALTHY_THRESHOLD
   task_secrets                = var.TASK_SECRETS
   task_environment            = var.TASK_ENVIRONMENT
-  #task_role                   = var.TASK_ROLE
-  #task_exec_role              = var.TASK_EXEC_ROLE
   service_security_group      = var.SERVICE_SECURITY_GROUP 
   service_subnets             = var.SERVICE_SUBNETS
   target_group_port           = var.TARGET_GROUP_PORT
   target_group_protocol       = var.TARGET_GROUP_PROTOCOL
   target_group_vpc            = var.TARGET_GROUP_VPC
   target_group_target_type    = var.TARGET_GROUP_TARGET_TYPE
+  assign_public_ip            = var.ASSIGN_PUBLIC_IP
   #############################
   #      AWS environment      #
   #############################

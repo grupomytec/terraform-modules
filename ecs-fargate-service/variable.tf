@@ -36,6 +36,11 @@ variable "service_subnets" {
   description = "Service network subnets"
 }
 
+variable "assign_public_ip" {
+  type        = bool
+  description = "Assign Public IP"
+}
+
 variable "sub_domain" {
   type        = string
   description = "Sub Domain App"
