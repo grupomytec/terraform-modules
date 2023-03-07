@@ -143,44 +143,6 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
 EOF
 }
 
-# Create Task Definition
-# resource "aws_ecs_task_definition" "main" {
-#   family                   = var.app_name
-#   network_mode             = "bridge"
-#   requires_compatibilities = ["EC2"]
-#   cpu                      = var.cpu
-#   memory                   = var.memory
-#   execution_role_arn       = aws_iam_role.ecs_task_exec_role.arn
-#   task_role_arn            = aws_iam_role.ecs_task_role.arn
-
-#   container_definitions = <<EOF
-# [
-#   {
-#     "cpu": ${var.cpu},
-#     "image": "${aws_ecr_repository.main.repository_url}:latest",
-#     "memory": ${var.memory},
-#     "name": "${var.app_name}",
-#     "portMappings": [
-#       {
-#         "containerPort": ${var.app_port},
-#         "hostPort": 0
-#       }
-#     ],
-#     "logConfiguration": {
-#       "logDriver": "awslogs",
-#       "options": {
-#         "awslogs-group": "/ecs/${var.app_name}",
-#         "awslogs-region": "${var.region}",
-#         "awslogs-stream-prefix": "ecs"
-#       }
-#     },
-#     "environment" : ${var.task_environment},
-#     "secrets": ${var.task_secrets}
-#   }
-# ]
-# EOF
-# }
-
 resource "aws_ecs_task_definition" "main" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -200,7 +162,7 @@ resource "aws_ecs_task_definition" "main" {
             {
                 "protocol": "tcp",
                 "containerPort": ${var.task_container_app_port},
-                "HostPort" : ${var.service_host_app_port}
+                "HostPort" : ${var.task_container_app_port}
             }
         ],
         "logConfiguration": {
@@ -230,23 +192,6 @@ resource "aws_cloudwatch_log_group" "main" {
   retention_in_days = var.logs_retention
   # tags              = var.tags
 }
-
-# Create Service
-# resource "aws_ecs_service" "main" {
-#   name            = "${var.app_name}-service"
-#   cluster         = var.cluster_name
-#   task_definition = aws_ecs_task_definition.main.arn
-#   desired_count   = var.min_capacity
-#   launch_type     = "EC2"
-
-
-#   load_balancer {
-#     target_group_arn = var.load_balancer_target_group
-#     container_name   = var.app_name
-#     container_port   = var.app_port
-#   }
-
-# }
 
 # Autoscaling Target
 resource "aws_appautoscaling_target" "main" {
@@ -328,7 +273,7 @@ resource "aws_ecs_service" "main" {
   load_balancer {
     target_group_arn = aws_alb_target_group.aws_alb_target.id
     container_name   = var.app_name
-    container_port   = var.service_host_app_port
+    container_port   = var.task_container_app_port
   }
  
   lifecycle {

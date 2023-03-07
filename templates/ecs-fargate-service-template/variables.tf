@@ -35,10 +35,6 @@ variable "SUB_DOMAIN" {
   default = ""
 }
 
-variable "SERVICE_HOST_APP_PORT" {
-  type = string
-}
-
 variable "TASK_CONTAINER_APP_PORT" {
   type = string
 }

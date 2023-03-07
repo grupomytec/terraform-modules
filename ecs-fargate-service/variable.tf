@@ -51,11 +51,6 @@ variable "sub_domain" {
   description = "Sub Domain App"
 }
 
-variable "service_host_app_port" {
-  type = string
-  description = "Service Host App Port"
-}
-
 variable "task_container_app_port" {
   type = string
   description = "Task Contianer App Port"
