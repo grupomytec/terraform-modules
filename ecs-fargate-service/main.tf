@@ -210,6 +210,12 @@ resource "aws_ecs_task_definition" "main" {
                 "awslogs-stream-prefix": "ecs"
             }
         },
+        "healthCheck": {
+          "command": [ "CMD-SHELL", "curl -f http://localhost:8080/ || exit 1" ],
+          "timeout": 60,
+          "startPeriod": 60,
+          "retries": 3
+        },
         "environment" : ${var.task_environment},
         "secrets": ${var.task_secrets}
     }
