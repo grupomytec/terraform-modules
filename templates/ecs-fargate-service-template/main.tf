@@ -31,6 +31,7 @@ module "ecs-fargate-service-module" {
   tg-healthy_threshold        = var.TG_HEALTHY_THRESHOLD
   tg-unhealthy_threshold      = var.TG_UNHEALTHY_THRESHOLD
   task_secrets                = var.TASK_SECRETS
+  task_health_check_command   = var.TASK_HEALTH_CHECK_COMMAND
   task_environment            = var.TASK_ENVIRONMENT
   service_security_group      = var.SERVICE_SECURITY_GROUP 
   service_subnets             = var.SERVICE_SUBNETS

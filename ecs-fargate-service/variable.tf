@@ -16,6 +16,11 @@ variable "task_secrets" {
   default     = "{}"
 }
 
+variable "task_health_check_command" {
+  type        = list
+  description = "Task environment secrets"
+}
+
 #variable "task_role" {
 #  type        = string
 #  description = "Task role"

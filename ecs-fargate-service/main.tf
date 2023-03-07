@@ -211,7 +211,7 @@ resource "aws_ecs_task_definition" "main" {
             }
         },
         "healthCheck": {
-          "command": [ "CMD-SHELL", "curl -f http://localhost:8080/ || exit 1" ],
+          "command": ${var.task_health_check_command},
           "timeout": 60,
           "startPeriod": 60,
           "retries": 3
