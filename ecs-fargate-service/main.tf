@@ -302,9 +302,10 @@ resource "aws_lb_listener_rule" "main" {
 }
 
 resource "aws_ecs_service" "main" {
-  name                              = "${var.app_name}"
-  cluster                           = var.cluster_name
+  name                               = "${var.app_name}"
+  cluster                            = var.cluster_name
   task_definition                    = aws_ecs_task_definition.main.arn
+  health_check_grace_period_seconds  = var.health_check_grace_period_seconds
   desired_count                      = 2
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200

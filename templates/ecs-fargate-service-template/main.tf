@@ -12,6 +12,7 @@ module "ecs-fargate-service-module" {
   source                      = "../../ecs-fargate-service"
   app_name                    = var.APP_NAME
   cluster_name                = var.CLUSTER_NAME
+  health_check_grace_period_seconds = var.HEALTH_CHECK_GRACE_PERIOD_SECONDS
   #############################
   #         App config        #
   #############################

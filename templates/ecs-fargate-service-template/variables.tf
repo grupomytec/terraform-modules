@@ -8,26 +8,26 @@ variable "AWS_ACCOUNT_ID" {
 
 variable "TARGET_GROUP_PORT" {
   type        = number
-  description = "Account id  of the task"
 }
 
 variable "TARGET_GROUP_PROTOCOL" {
   type        = string
-  description = "Account id  of the task"
 }
 
 variable "TARGET_GROUP_VPC" {
   type        = string
-  description = "Account id  of the task"
 }
 
 variable "TARGET_GROUP_TARGET_TYPE" {
   type        = string
-  description = "Account id  of the task"
 }
 
 variable "CLUSTER_NAME" {
   type = string
+}
+
+variable "HEALTH_CHECK_GRACE_PERIOD_SECONDS" {
+  type = number
 }
 
 variable "SUB_DOMAIN" {

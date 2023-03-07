@@ -178,6 +178,11 @@ variable "cluster_name" {
   description = "ECS Cluster"  
 }
 
+variable "health_check_grace_period_seconds" {
+  type = number
+  description = "Health Check Grace Period Seconds"  
+}
+
 variable "app_name" {
   type        = string
   description = "Name of Project"
