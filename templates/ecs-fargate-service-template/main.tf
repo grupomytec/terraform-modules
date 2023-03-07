@@ -41,12 +41,13 @@ module "ecs-fargate-service-module" {
   #############################
   #      AWS environment      #
   #############################
-  account_id                  = var.AWS_ACCOUNT_ID
-  region                      = var.AWS_REGION
-  #load_balancer               = var.LOAD_BALANCER
-  #load_balancer_target_group  = var.LOAD_BALANCER_TARGET_GROUP
-  load_balancer_listner       = var.LOAD_BALANCER_LISTNER
-  logs_retention              = var.LOGS_RETENTION
-  ecr_retention               = var.ECR_RETENTION
-  # tags                        = var.TAGS
+  account_id                        = var.AWS_ACCOUNT_ID
+  region                            = var.AWS_REGION
+  #load_balancer                    = var.LOAD_BALANCER
+  #load_balancer_target_group       = var.LOAD_BALANCER_TARGET_GROUP
+  load_balancer_listner             = var.LOAD_BALANCER_LISTNER
+  load_balancer_listner_host_header = var.LOAD_BALANCER_LISTNER_HOST_HEADER
+  logs_retention                    = var.LOGS_RETENTION
+  ecr_retention                     = var.ECR_RETENTION
+  # tags                            = var.TAGS
 }   

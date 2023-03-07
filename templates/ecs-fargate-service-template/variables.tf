@@ -133,6 +133,10 @@ variable "LOAD_BALANCER_LISTNER" {
   type = string
 }
 
+variable "LOAD_BALANCER_LISTNER_HOST_HEADER" {
+  type        = list
+}
+
 variable "SERVICE_SECURITY_GROUP" {
   type = list
 }

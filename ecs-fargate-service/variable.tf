@@ -97,6 +97,12 @@ variable "load_balancer_listner" {
   description = "Load Balancer Listner"
 }
 
+variable "load_balancer_listner_host_header" {
+  type        = list
+  description = "Load Balancer Host Header"
+}
+
+
 variable "logs_retention" {
   type        = number
   description = "Log retention days used in Tasks"

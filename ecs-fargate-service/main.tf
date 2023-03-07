@@ -294,8 +294,8 @@ resource "aws_lb_listener_rule" "main" {
   }
 
   condition {
-    path_pattern  {
-      values = ["/static/*"]
+    host_header {
+      values = var.load_balancer_listner_host_header
     }
   }
 
