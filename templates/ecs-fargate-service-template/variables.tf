@@ -36,7 +36,7 @@ variable "SUB_DOMAIN" {
 }
 
 variable "SERVICE_HOST_APP_PORT" {
-  type = string
+  type = number
 }
 
 variable "TASK_CONTAINER_APP_PORT" {

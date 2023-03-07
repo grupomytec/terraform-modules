@@ -52,7 +52,7 @@ variable "sub_domain" {
 }
 
 variable "service_host_app_port" {
-  type = string
+  type = number
   description = "Service Host App Port"
 }
 
