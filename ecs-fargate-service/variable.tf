@@ -17,7 +17,7 @@ variable "task_secrets" {
 }
 
 variable "task_health_check_command" {
-  type        = list
+  type        = string
   description = "Task environment secrets"
 }
 

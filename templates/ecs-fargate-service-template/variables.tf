@@ -116,9 +116,9 @@ variable "TASK_SECRETS" {
 }
 
 variable "TASK_HEALTH_CHECK_COMMAND" {
-  type        = list
+  type        = string
   description = "Task environment secrets"
-  default = [ "CMD-SHELL", "curl -f http://localhost:80/ || exit 1" ]
+  default = "[ \"CMD-SHELL\", \"curl -f http://localhost:80/ || exit 1\" ]"
 }
 #variable "TASK_ROLE" {
 #  type = string
