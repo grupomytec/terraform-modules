@@ -200,6 +200,7 @@ resource "aws_ecs_task_definition" "main" {
             {
                 "protocol": "tcp",
                 "containerPort": ${var.task_container_app_port}
+                "HostPort" : ${var.service_host_app_port}
             }
         ],
         "logConfiguration": {
