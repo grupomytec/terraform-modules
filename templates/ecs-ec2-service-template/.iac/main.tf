@@ -16,7 +16,9 @@ module "ecs-module" {
   #         App config        #
   #############################
   sub_domain                  = var.SUB_DOMAIN
-  app_port                    = var.APP_PORT
+  service_host_app_port       = var.SERVICE_HOST_APP_PORT
+  task_container_app_port     = var.TASK_CONTAINER_APP_PORT
+  #app_port                    = var.APP_PORT
   cpu                         = var.CPU
   memory                      = var.MEMORY
   metric_type                 = var.METRIC_TYPE

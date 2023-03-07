@@ -199,7 +199,7 @@ resource "aws_ecs_task_definition" "main" {
         "portMappings": [
             {
                 "protocol": "tcp",
-                "containerPort": ${var.app_port}
+                "containerPort": ${var.task_container_app_port}
             }
         ],
         "logConfiguration": {
@@ -327,7 +327,7 @@ resource "aws_ecs_service" "main" {
   load_balancer {
     target_group_arn = aws_alb_target_group.aws_alb_target.id
     container_name   = var.app_name
-    container_port   = var.app_port
+    container_port   = var.service_host_app_port
   }
  
   lifecycle {
