@@ -131,6 +131,10 @@ variable "APP_NAME" {
   type = string
 }
 
+variable "TASK_ROLE_SECRETS_ARN" {
+  type  = string
+}
+
 #variable "LOAD_BALANCER_TARGET_GROUP" {
 #  type = string
 #}

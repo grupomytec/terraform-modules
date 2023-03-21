@@ -192,3 +192,8 @@ variable "app_name" {
   type        = string
   description = "Name of Project"
 }
+
+variable "task_role_secrets_arn" {
+  type        = string
+  description = "Task Role Secrets Arn"
+}

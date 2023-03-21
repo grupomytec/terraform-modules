@@ -86,7 +86,7 @@ resource "aws_iam_role_policy" "ecs_task_exec_role_policy" {
               "secretsmanager:ListSecretVersionIds",
               "secretsmanager:TagResource"
           ],
-          "Resource": "arn:aws:secretsmanager:us-east-1:${var.account_id}:secret:service-*"
+          "Resource": "${var.task_role_secrets_arn}"
       }
   ]
 }

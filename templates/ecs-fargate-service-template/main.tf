@@ -41,6 +41,7 @@ module "ecs-fargate-service-module" {
   target_group_vpc            = var.TARGET_GROUP_VPC
   target_group_target_type    = var.TARGET_GROUP_TARGET_TYPE
   assign_public_ip            = var.ASSIGN_PUBLIC_IP
+  task_role_secrets_arn       = var.TASK_ROLE_SECRETS_ARN
   #############################
   #      AWS environment      #
   #############################
