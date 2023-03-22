@@ -26,7 +26,7 @@ ENV PYTHON_SCRIPT="$TERRAFORM_DIR/ecs-ec2-spotio"
 ENV SCRIPT_DIR="$TERRAFORM_DIR/scripts"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN apk update && apk add --no-cache terraform aws-cli python3 py3-pip git
+RUN apk update && apk add --no-cache terraform aws-cli python3 py3-pip git jq
 
 WORKDIR $TERRAFORM_DIR
 COPY . .
