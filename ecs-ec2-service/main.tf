@@ -204,7 +204,43 @@ resource "aws_ecs_service" "main" {
   }
 
 }
+# CloudWatch Alarms 
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_up" {
+  #count               = "${var.autoscale_rpm_enabled == "true" ? 1 : 0}"
+  alarm_name          = "scale-policy-up"
+  alarm_description   = "Managed by Terraform"
+  alarm_actions       = [aws_autoscaling_policy.ecs_policy_up.arn]
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Maximum"
+  threshold           = "50"
 
+  dimensions = {
+    ClusterName = var.cluster_name
+    ServiceName = aws_ecs_service.main.name
+  }
+}
+resource "aws_cloudwatch_metric_alarm" "cloudwatch_metric_alarm_down" {
+  #count               = "${var.autoscale_rpm_enabled == "true" ? 1 : 0}"
+  alarm_name          = "scale-policy-down"
+  alarm_description   = "Managed by Terraform"
+  alarm_actions       = [aws_autoscaling_policy.ecs_policy_down.arn]
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Maximum"
+  threshold           = "60"
+
+  dimensions = {
+    ClusterName = var.cluster_name
+    ServiceName = aws_ecs_service.main.name
+  }
+}  
 # Autoscaling Target
 resource "aws_appautoscaling_target" "main" {
   max_capacity       = var.max_capacity
@@ -214,24 +250,74 @@ resource "aws_appautoscaling_target" "main" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 }
-
-
 # Autoscaling Policy
-resource "aws_appautoscaling_policy" "ecs_policy" {
-  name               = "scale-policy"
-  policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.main.resource_id
-  scalable_dimension = aws_appautoscaling_target.main.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.main.service_namespace
+resource "aws_appautoscaling_policy" "ecs_policy_up" {
+  name                    = "${var.cluster_name}/${aws_ecs_service.main.name}-scale-up"
+  policy_type             = "StepScaling"
+  resource_id             = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
+  scalable_dimension      = "ecs:service:DesiredCount"
+  service_namespace       = "ecs"
 
-  target_tracking_scaling_policy_configuration {
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 50
+    metric_aggregation_type = "Maximum"
 
-    predefined_metric_specification {
-      predefined_metric_type = var.metric_type
+    step_adjustment {
+      metric_interval_lower_bound = -10.0
+      metric_interval_upper_bound = 0.0
+      scaling_adjustment  = -1
     }
-
-    target_value = var.target_value
+    step_adjustment {
+      metric_interval_lower_bound = -20.0
+      metric_interval_upper_bound = -10.0
+      scaling_adjustment = -2
+    }
+    step_adjustment {
+      metric_interval_lower_bound = -30.0
+      metric_interval_upper_bound = -20.0
+      scaling_adjustment = -3
+    }
+      step_adjustment {
+      metric_interval_upper_bound = -30.0
+      scaling_adjustment = -4
+    }  
   }
+  depends_on = ["aws_appautoscaling_target.main"]
+}
+resource "aws_appautoscaling_policy" "ecs_policy_down" {
+  name                    = "${var.cluster_name}/${aws_ecs_service.main.name}-scale-down"
+  policy_type             = "StepScaling"
+  resource_id             = "service/${var.cluster_name}/${aws_ecs_service.main.name}"
+  scalable_dimension      = "ecs:service:DesiredCount"
+  service_namespace       = "ecs"
+
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Maximum"
+
+    step_adjustment {
+      metric_interval_lower_bound = 0.0
+      metric_interval_upper_bound = 10.0
+      scaling_adjustment  = 1
+    }
+    step_adjustment {
+      metric_interval_lower_bound = 10.0
+      metric_interval_upper_bound = 20.0
+      scaling_adjustment = 2
+    }
+    step_adjustment {
+      metric_interval_lower_bound = 20.0
+      metric_interval_upper_bound = 30.0
+      scaling_adjustment = 4
+    }
+      step_adjustment {
+      metric_interval_upper_bound = 30.0
+      scaling_adjustment = 6
+    }  
+  }
+  depends_on = ["aws_appautoscaling_target.main"]
 }
 
 resource "random_string" "random" {
