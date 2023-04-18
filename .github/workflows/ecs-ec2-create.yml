@@ -25,7 +25,7 @@ jobs:
         #SPOTIO_ACCOUNT: "Rock Stage Dev"
         #SPOTIO_AUTH_USER: "${{ secrets.SPOTIO_AUTH_USER }}"
         #SPOTIO_AUTH_TOKEN: "${{ secrets.SPOTIO_AUTH_TOKEN }}"
-        CONFIGS: ".iac/test"
+        CONFIGS: ".iac/ecs-ec2"
 
     steps:
       - name: Checkout
