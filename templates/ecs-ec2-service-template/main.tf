@@ -31,6 +31,7 @@ module "ecs-ec2-service-module" {
   tg-unhealthy_threshold      = var.TG_UNHEALTHY_THRESHOLD
   task_secrets                = var.TASK_SECRETS
   task_environment            = var.TASK_ENVIRONMENT
+  vpc                         = var.VPC
   #task_role                   = var.TASK_ROLE
   #task_exec_role              = var.TASK_EXEC_ROLE
   #############################
@@ -43,6 +44,5 @@ module "ecs-ec2-service-module" {
   load_balancer_listner       = var.LOAD_BALANCER_LISTNER
   logs_retention              = var.LOGS_RETENTION
   ecr_retention               = var.ECR_RETENTION
-  vpc                         = var.VPC
   # tags                        = var.TAGS
 }   
