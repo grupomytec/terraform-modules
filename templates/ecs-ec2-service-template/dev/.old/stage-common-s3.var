@@ -1,0 +1,4 @@
+COMMON_ENV_BUCKET=bucketenvdev
+COMMON_ENV_PATH=common/env.dev
+
+
