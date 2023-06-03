@@ -8,7 +8,11 @@ cd $TF_CURRENT_ROOT
 echo -e "* source .env files from \"$ENV_FILE\""
 
 set -a 
-source "$ENV_FILE"
+while IFS= read -r line; do
+  if [[ $line != \#* ]]; then  # Ignora linhas de comentários
+    export "$line"
+  fi
+done < "$ENV_FILE"
 
 echo -e "\n"
 
