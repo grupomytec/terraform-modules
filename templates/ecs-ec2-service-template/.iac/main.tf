@@ -8,7 +8,7 @@ terraform {
   backend "s3" {}
 }
 
-module "ecs-module" {
+module "ecs-ec2-service-module" {
   source                      = "../../ecs-ec2-service"
   app_name                    = var.APP_NAME
   cluster_name                = var.CLUSTER_NAME
