@@ -140,7 +140,7 @@ variable "app_name" {
   type        = string
   description = "Name of Project"
 }
-variable "VPC_ID" {
+variable "vpc_id" {
   type        = string
   description = "existing vpc"
 }

@@ -31,7 +31,7 @@ module "ecs-ec2-service-module" {
   tg-unhealthy_threshold      = var.TG_UNHEALTHY_THRESHOLD
   task_secrets                = var.TASK_SECRETS
   task_environment            = var.TASK_ENVIRONMENT
-  vpc_id                      = var.VPC_ID
+  vpc_id = var.VPC_ID
   #task_role                   = var.TASK_ROLE
   #task_exec_role              = var.TASK_EXEC_ROLE
   #############################

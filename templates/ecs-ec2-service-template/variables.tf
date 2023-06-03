@@ -113,5 +113,4 @@ variable "LOAD_BALANCER_LISTNER" {
 }
 variable "VPC_ID" {
   type        = string
-  description = "existing vpc"
 }

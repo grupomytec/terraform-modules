@@ -8,7 +8,13 @@ cd $TF_CURRENT_ROOT
 echo -e "* source .env files from \"$ENV_FILE\""
 
 set -a 
-export $(grep -v '^#' "$ENV_FILE" | xargs)
+while IFS= read -r line || [ -n "$line" ]; do
+  if [ "${line:0:1}" != "#" ]; then
+    var_name=$(echo "$line" | awk -F "=" '{print $1}' | xargs)
+    var_value=$(echo "$line" | awk -F "=" '{print $2}' | xargs)
+    export "$var_name"="$var_value"
+  fi
+done < "$ENV_FILE"
 
 echo -e "\n"
 
