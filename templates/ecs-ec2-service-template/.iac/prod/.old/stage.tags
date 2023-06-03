@@ -1,5 +1,0 @@
-"gitusedrepo"   = "git@github.com:grupomytec/terraform-modules.git"
-"project"       = "ProjectName"
-"tribe"         = "TribeName"
-"costcenter"    = "CostCenterName"
-"environment"   = "Development"
