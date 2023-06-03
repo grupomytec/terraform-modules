@@ -8,9 +8,7 @@ cd $TF_CURRENT_ROOT
 echo -e "* source .env files from \"$ENV_FILE\""
 
 set -a 
-while IFS= read -r line; do
-  export "$line"
-done < "$ENV_FILE"
+source "$ENV_FILE"
 
 echo -e "\n"
 
