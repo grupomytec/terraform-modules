@@ -111,3 +111,7 @@ variable "LOAD_BALANCER_TARGET_GROUP" {
 variable "LOAD_BALANCER_LISTNER" {
   type = string
 }
+variable "vpc" {
+  type        = string
+  description = "existing vpc"
+}
