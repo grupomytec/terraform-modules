@@ -210,7 +210,7 @@ resource "aws_alb_target_group" "main" {
   name        = "${var.app_name}-${random_string.random.result}"
   port        = var.app_port
   protocol    = "HTTP"
-  vpc_id      = var.vpc
+  vpc_id      = var.vpc_id
   target_type = "ip"
 
   health_check {
