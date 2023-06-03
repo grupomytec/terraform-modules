@@ -198,9 +198,32 @@ resource "aws_ecs_service" "main" {
 
 
   load_balancer {
-    target_group_arn = var.load_balancer_target_group
+    target_group_arn = aws_alb_target_group.main.id
     container_name   = var.app_name
     container_port   = var.app_port
+  }
+
+}
+
+# Target Group to App
+resource "aws_alb_target_group" "main" {
+  name        = "${var.app_name}-${random_string.random.result}"
+  port        = var.app_port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc
+  target_type = "ip"
+
+  health_check {
+    interval            = var.tg-interval
+    path                = var.tg-path
+    timeout             = var.tg-timeout
+    matcher             = var.tg-matcher
+    healthy_threshold   = var.tg-healthy_threshold
+    unhealthy_threshold = var.tg-unhealthy_threshold
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
 }
@@ -246,12 +269,12 @@ resource "aws_lb_listener_rule" "main" {
 
   action {
     type             = "forward"
-    target_group_arn = var.load_balancer_target_group
+    target_group_arn = aws_alb_target_group.main.id
   }
 
   condition {
-    path_pattern  {
-      values = ["/static/*"]
+    host_header {
+      values = ["${var.sub_domain}"]
     }
   }
 
