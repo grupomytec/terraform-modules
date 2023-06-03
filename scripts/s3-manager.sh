@@ -42,6 +42,10 @@ resource "aws_s3_bucket" "s3_bucket" {
   bucket = "$FULL_BUCKET_NAME"
   acl    = "private"
 }
+resource "aws_s3_bucket_object" "file_upload" {
+  bucket = aws_s3_bucket.s3_bucket.id
+  key    = "$TF_S3_STATE_DIR"  # Nome do arquivo a ser enviado
+}
 EOF
 
 cd $TF_LOCAL_S3_DIR
