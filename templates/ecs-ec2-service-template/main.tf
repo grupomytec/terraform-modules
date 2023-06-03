@@ -43,5 +43,6 @@ module "ecs-ec2-service-module" {
   load_balancer_listner       = var.LOAD_BALANCER_LISTNER
   logs_retention              = var.LOGS_RETENTION
   ecr_retention               = var.ECR_RETENTION
+  vpc                         = var.VPC
   # tags                        = var.TAGS
 }   
