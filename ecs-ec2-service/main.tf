@@ -146,7 +146,7 @@ EOF
 # Create Task Definition
 resource "aws_ecs_task_definition" "main" {
   family                   = var.app_name
-  network_mode             = "bridge"
+  network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
   cpu                      = var.cpu
   memory                   = var.memory
@@ -198,7 +198,7 @@ resource "aws_ecs_service" "main" {
 
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.main.id
+    target_group_arn = aws_alb_target_group.main.id
     container_name   = var.app_name
     container_port   = var.app_port
   }
@@ -206,12 +206,12 @@ resource "aws_ecs_service" "main" {
 }
 
 # Target Group to App
-resource "aws_lb_target_group" "main" {
+resource "aws_alb_target_group" "main" {
   name        = "${var.app_name}-${random_string.random.result}"
   port        = var.app_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
-  target_type = "ip"
+  target_type = "IP"
 
   health_check {
     interval            = var.tg-interval
@@ -269,7 +269,7 @@ resource "aws_lb_listener_rule" "main" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.main.arn
+    target_group_arn = aws_alb_target_group.main.arn
   }
 
   condition {
