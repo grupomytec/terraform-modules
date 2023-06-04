@@ -55,6 +55,13 @@ export APP_ENV_SECRETS_FILE="$ENV_DIR/app-secrets.json"
 
 PARSED_NAME=$(echo "$APP_NAME" | sed -E 's/(\W|_)/-/g')
 LOAD_BALANCER_NAME="$PARSED_NAME-aws-alb"
+
+if [ -z "$LOAD_BALANCER_NAME" ]; then
+   echo "* using load balancer arn from \"$ENV_DIR\""
+   export TF_VAR_LOAD_BALANCER_ARN=$$LOAD_BALANCER_ARN
+   LOAD_BALANCER_NAME="$(echo "$LOAD_BALANCER_ARN" | cut -d '/' -f 3)"
+fi
+
 LOAD_BALANCER_ARN=$(aws elbv2 describe-load-balancers --region $AWS_REGION --output text --query "LoadBalancers[?LoadBalancerName=='$LOAD_BALANCER_NAME'].LoadBalancerArn")
 
 if [ ! "$LOAD_BALANCER_ARN" = "" ]; then
