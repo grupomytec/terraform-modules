@@ -211,7 +211,7 @@ resource "aws_alb_target_group" "main" {
   port        = var.app_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
-  target_type = "instance"
+  target_type = "ip"
 
   health_check {
     interval            = var.tg-interval
