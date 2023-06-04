@@ -146,7 +146,7 @@ EOF
 # Create Task Definition
 resource "aws_ecs_task_definition" "main" {
   family                   = var.app_name
-  network_mode             = "awsvpc"
+  network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
   cpu                      = var.cpu
   memory                   = var.memory
