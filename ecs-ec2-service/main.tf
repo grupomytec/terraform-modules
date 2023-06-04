@@ -198,7 +198,7 @@ resource "aws_ecs_service" "main" {
 
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.main.id
+    target_group_arn = aws_lb_target_group.main.id
     container_name   = var.app_name
     container_port   = var.app_port
   }
@@ -206,7 +206,7 @@ resource "aws_ecs_service" "main" {
 }
 
 # Target Group to App
-resource "aws_alb_target_group" "main" {
+resource "aws_lb_target_group" "main" {
   name        = "${var.app_name}-${random_string.random.result}"
   port        = var.app_port
   protocol    = "HTTP"
@@ -269,7 +269,7 @@ resource "aws_lb_listener_rule" "main" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.main.arn
+    target_group_arn = aws_lb_target_group.main.arn
   }
 
   condition {
