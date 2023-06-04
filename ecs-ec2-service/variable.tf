@@ -51,10 +51,10 @@ variable "region" {
   description = "Region of the task"
 }
 
-variable "load_balancer_target_group" {
-  type        = string
-  description = "Load Balancer Target Group"
-}
+# variable "load_balancer_target_group" {
+#   type        = string
+#   description = "Load Balancer Target Group"
+# }
 
 variable "load_balancer_listner" {
   type        = string
