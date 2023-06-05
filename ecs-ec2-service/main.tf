@@ -86,7 +86,7 @@ resource "aws_iam_role_policy" "ecs_task_exec_role_policy" {
               "secretsmanager:ListSecretVersionIds",
               "secretsmanager:TagResource"
           ],
-          "Resource": "arn:aws:secretsmanager:us-east-1:${var.account_id}:secret:service-*"
+          "Resource": "arn:aws:secretsmanager:${var.region}:${var.account_id}:secret:*"
       }
   ]
 }
@@ -136,7 +136,7 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
           "Sid": "VisualEditor1",
           "Effect": "Allow",
           "Action": "sqs:*",
-          "Resource": "arn:aws:sqs:us-east-1:${var.account_id}:service-*"
+          "Resource": "arn:aws:sqs:${var.region}:${var.account_id}:*"
       }
   ]
 }
