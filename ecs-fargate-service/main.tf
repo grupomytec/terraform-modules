@@ -247,7 +247,7 @@ resource "aws_lb_listener_rule" "main" {
 
   condition {
     host_header {
-      values = var.load_balancer_listner_host_header
+      values = ["${var.sub_domain}"]
     }
   }
 
